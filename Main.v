@@ -3,11 +3,31 @@
 `define FORTHEWIN = 666
 `define BLOCK = 3
 
+//got sick of having to remember #'s
+`define EMPTY 0
+`define O 1
+`define X 2
+
+
+//priority naming
+`define LDIAG = 1
+`define RDIAG = 2
+`define HORIZ1 = 3
+`define HORIZ2 = 4
+`define HORIZ3 = 5
+`define VERT1 = 6
+`define VERT2 = 7
+`define VERT3 = 8
+
 module top;
 
 	wire [7:0]result;
 	wire overflow;
 	integer board [8:0]; //a 9 element array storing all slots on the board
+	
+	//I dont want to deal with passing this shit around and we're not graded on efficiency ... SO GLOBAL :)
+	int currentMatches = -1; //essentially how many x's I have in a certain winning combo unless its blocked 
+	int myPriority = -1; //matches and priority are both keywords. Basically fuck verilog, its just too good.
 
 	//Here is what the board will look like
 	//  0    1    2
@@ -29,17 +49,209 @@ module top;
 	  * 1 = O
 	  * 2 = X
 	  * else means something is fucked
-          */
+      */
 	task initBoard();
 		begin
 			//outer loop is for every single spot
 			for (integer box =0; box < 9; box++)begin
 				//inner loop is for every bit in the spot
-				board[box] = 0; //set everything to 0	
+				board[box] = EMPTY; //set everything to 0	
 			end
 		end
 	endtask
+	
+	
+	
+	/*
+	 * Method that will search through winning combinations and prioritize a move depending on the board's current layout
+	 */
+	task determinePriority();
+		begin
+			//So basically this logic will look to see if I can win immediately or stop him
+			//from winning immediately. If I cant then I'll choose the next best possible option prioritizing the diags
+			currentMatches = -1;
+			myPriority = -1; //rezero these
+			
+			//These must be if's and not else ifs because they all need to check. Else if would break after 1.
+			//If these things run in parallel and I get threading problems I'm going to be upset
+			if (canIWinDiagonallyLeft(1) > currentMatches) begin
+				myPriority = LDIAG;
+				currentMatches = canIWinDiagonallyLeft(1);
+			end
 
+			if (canIWinDiagonallyRight(1) > currentMatches) begin
+				currentMatches = canIWinDiagonallyRight(1);
+				myPriority = RDIAG;
+			end
+
+			if (canIWinFirstColumn(1) > currentMatches) begin
+				currentMatches = canIWinFirstColumn(1);
+				myPriority = VERT1;
+			end
+			
+			if (canIWinSecondColumn(1) > currentMatches) begin
+				currentMatches = canIWinSecondColumn(1);
+				myPriority = VERT2;
+			end 
+			
+			if (canIWinThirdColumn(1) > currentMatches) begin
+				currentMatches = canIWinThirdColumn(1);
+				myPriority = VERT3;
+			end
+			
+			 if (canIWinFirstRow(1) > currentMatches) begin
+				currentMatches = canIWinFirstRow(1);
+				myPriority = HORIZ1;
+			end
+			
+			if (canIWinSecondRow(1) > currentMatches) begin
+				currentMatches = canIWinSecondRow(1);
+				myPriority = HORIZ2;
+			end
+			
+			if (canIWinThirdRow(1) > currentMatches) begin
+				currentMatches = canIWinThirdRow(1)
+				myPriority = HORIZ3;
+			end
+		end
+		
+		//IDK how to call things in verilog hope this is right
+		insertX(); //now actually insert an x
+	endtask
+	
+	/*
+	 * Method responsible for actually inserting an x into the board. Called after move priority is determined.
+	 */
+	task insertX();
+		begin
+			if (myPriority== LDIAG) begin
+				//checks all the left diag spots to find missing and fill
+				if (isEmpty(board[4])) begin
+					//middle is always priority
+					board[4]=X;
+				end else if (isEmpty(board[0])) begin
+					//I already had middle take top left
+					board[0]=X;
+				end else begin
+					//I already had top left and middle take bottom right. Could add redundancy
+					board[8]=X;
+				end
+			end
+			else if(myPriority==RDIAG) begin
+				//checks all the right diag spots to find missing and fill
+				if (isEmpty(board[4])) begin
+					//middle is always priority
+					board[4]=X;
+				end 
+				else if (isEmpty(board[6]) begin
+					//I already had middle take bottom left
+					board[6] =X;
+				end
+				else begin
+					//I already had bottom left and middle take top right. Could add redundancy
+					board[2]=X;
+				end
+			end //IDK WHY THE BRACKETS ARE SO FUCKING DUMB. WHY THE FUCK DO I NEED TWO OF THESE
+			//Verilog is the kid who just licks the walls in elementary school
+			end //something is really fucked up with brackets
+			else if (myPriority == VERT1) begin
+				if (isEmpty(board[0])) begin
+					//top left
+					board[0] = X;
+				end else if (isEmpty(board[3])) begin
+					//middle left
+					board[3] = X;
+				end else if (isEmpty(board[6]) begin
+					//bottom left
+					board[6] = X;
+				end
+			end  //gotta love the brackets
+			else if (myPriority == VERT2) begin
+				if (isEmpty(board[1])) begin
+					//top middle
+					board[1] = X;
+				end else if (isEmpty(board[4])) begin
+					//middle middle 
+					board[4] = X;
+				end else if (isEmpty(board[7])) begin
+					//bottom middle
+					board[7] = X;
+				end
+			end 
+			else if (myPriority == VERT3) begin
+				if (isEmpty(board[2])) begin
+					//top right
+					board[2] = X;
+				end else if (isEmpty(board[5])) begin
+					//middle right 
+					board[5] = X;
+				end else if (isEmpty(board[8])) begin
+					//bottom right
+					board[8] = X;
+				end
+			end 
+			else if (myPriority == HORIZ1) begin
+				if (isEmpty(board[0])) begin
+					//top left
+					board[0] = X;
+				end else if (isEmpty(board[1])) begin
+					//top middle 
+					board[1] = X;
+				end else if (isEmpty(board[2])) begin
+					//bottom middle
+					board[2] = X;
+				end
+			end
+			else if (myPriority == HORIZ2) begin
+				if (isEmpty(board[3])) begin
+					//middle left
+					board[3] = X;
+				end else if (isEmpty(board[4])) begin
+					//middle middle 
+					board[4] = X;
+				end else if (isEmpty(board[5])) begin
+					//middle right
+					board[5] = X;
+				end
+			end
+			else if (myPriority == HORIZ3) begin
+				if (isEmpty(board[6])) begin
+					//bottom left
+					board[6] = X;
+				end else if (isEmpty(board[7])) begin
+					//bottom middle
+					board[7] = X;
+				end else if (isEmpty(board[8])) begin
+					//bottom right
+					board[8] = X;
+				end
+			end
+		end end //fuck the brackets I seriously cant understand how they work
+	endtask
+				
+				
+	
+	
+	
+	
+	
+	/* there is a bug for case X O X
+							   - X O
+							   O X O
+	Solution is to add redundancy. If no prioritiy is assigned find an open spot
+	*/ 
+	task redundancy();
+		begin
+			//basically we have not set a priority and need to find a move
+			for (integer box = 0; box < 9; box++) begin
+				if (isEmpty(board[box])begin
+					board[box] = 2; //so yes, this can trip multiple 
+					//times which means we only call it when it absolutely is necessary
+				end
+			end
+		end
+	endtask	
+		
 	/**
  	  * Says its full unless I find an instance where its not
 	  */
@@ -62,7 +274,7 @@ module top;
 	  * Ok so my outputs here are going to be -2 if its garbage
 	  * TODO
  	  */
-	function integer canIWinDiagonallyLeft(input [1:0] aaronCarpenterSucksEggs);
+	function integer canIWinDiagonallyLeft(input aaronCarpenterSucksEggs);
 		begin
 			integer counter =0;
 			integer oppCounter = 0;
@@ -109,7 +321,7 @@ module top;
 	  * Ok so my outputs here are going to be -2 if its garbage
 	  * TODO
  	  */
-	function integer canIWinDiagonallyRight(input [1:0] aaronCarpenterSucksEggs);
+	function integer canIWinDiagonallyRight(input aaronCarpenterSucksEggs);
 		begin
 			integer counter =0;
 			integer oppCounter = 0;
@@ -483,8 +695,8 @@ module top;
 	//determine turn
 	//check if finished (check if three in row and check if the board is filled)
 	//simulate game
-	//determine Priority
-	//insertCharacter
+	//determine Priority check
+	//insertCharacter check
 	//isTakenByX //done
 	//isTakenByO done
 	//isEmpty done
