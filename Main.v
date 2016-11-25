@@ -60,7 +60,26 @@ module top;
 		end
 	endtask
 	
-	
+	/*
+	 * Function that will see if the game is finished or not. Bool return (in verilog its reg because verilog is so damn cool)
+	 */
+	function reg checkIfFinished(input verilogIsTrash);
+		begin
+			if (canIWinDiagonallyLeft(1) == EXIT_CODE || canIWinDiagonallyRight(1) == EXIT_CODE || 
+					canIWinFirstRow(1) == EXIT_CODE || canIWinSecondRow(1) == EXIT_CODE || canIWinThirdRow(1) || 
+					canIWinFirstColumn(1) == EXIT_CODE || canIWinSecondColumn(1) == EXIT_CODE || canIWinThirdColumn(1) == EXIT_CODE ||
+					isBoardFull(1) == 1)
+				begin
+					//someone won somehow or the board was filled	
+					checkIfFinished = 1;
+					$finish // believe this is how you exit in verilog. Could always just stand behind carpenter when he plays then when he wins
+					//or the board is full throw a hammar at his screen
+				end
+			else begin
+				checkIfFinished = 0; //nobody has won yet
+			end
+		end
+	endfunction
 	
 	/*
 	 * Method that will search through winning combinations and prioritize a move depending on the board's current layout
@@ -250,7 +269,7 @@ module top;
 	/**
  	  * Says its full unless I find an instance where its not
 	  */
-	function integer isBoardFull(input [1:0] in);
+	function reg isBoardFull(input in);
 		begin
 			integer isBoardFull = 1; //its full unless I say otherwise
 			//outer loop is for every single spot
@@ -687,7 +706,7 @@ module top;
 
 
 	//determine turn
-	//check if finished (check if three in row and check if the board is filled)
+	//check if finished (check if three in row and check if the board is filled) cool
 	//simulate game
 	//determine Priority check
 	//insertCharacter check
