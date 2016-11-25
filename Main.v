@@ -64,214 +64,379 @@ module top;
  	  */
 	function integer canIWinDiagonallyLeft(input [1:0] aaronCarpenterSucksEggs);
 		begin
-		integer counter =0;
-		integer oppCounter = 0;
+			integer counter =0;
+			integer oppCounter = 0;
 	
-		if (takenByX(board[0]))begin
-			//ok I got the top left corner
-			counter = counter + 1;
-		else if (takenByO(board[0]))begin
-			//he got top left
-			oppCounter = oppCounter + 1;
-		end
-		if(takenByX(board[4]))begin
-			//k i got the middle
-			counter = counter + 1;
-		else if (takenByO(board[4]))begin
-			//he got middle
-			oppCounter = oppCounter + 1;
-		end
-		if(takenByX(board[8]))begin
-			//ok i got bottom right
-			counter = counter + 1;
-		else if (takenByO(board[8]))begin
-			//he got bottom right
-			oppCounter = oppCounter + 1;
-		end
-		
-		if (counter == 3 || oppCounter == 3) begin
-			canIWinDiagonallyLeft = EXIT_CODE; //somebody has 3 in a row
-		else if (counter !=0 && oppCounter != 0) begin
-			canIWinDiagonallyLeft = CONTESTED; //no way to win here. He owns at least one tile and so do I
-		else if (counter == 2 && oppCounter == 0) begin
-			canIWinDiagonallyLeft = FORTHEWIN;
-		else if (counter ==0 && oppCounter ==2) begin
-			canIWinDiagonallyLeft = BLOCK; //hes about to win make this my priority
-		else begin
-			canIWinDiagonallyLeft = counter; //will return how close I am to winning diagonally left
-		end
+			if (takenByX(board[0]))begin
+				//ok I got the top left corner
+				counter = counter + 1;
+			end else if (takenByO(board[0]))begin
+				//he got top left
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[4]))begin
+				//k i got the middle
+				counter = counter + 1;
+			end else if (takenByO(board[4]))begin
+				//he got middle
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[8]))begin
+				//ok i got bottom right
+				counter = counter + 1;
+			end else if (takenByO(board[8]))begin
+				//he got bottom right
+				oppCounter = oppCounter + 1;
+			end
 
+			if (counter == 3 || oppCounter == 3) begin
+				canIWinDiagonallyLeft = EXIT_CODE; //somebody has 3 in a row
+			end else if (counter !=0 && oppCounter != 0) begin
+				canIWinDiagonallyLeft = CONTESTED; //no way to win here. He owns at least one tile and so do I
+			end else if (counter == 2 && oppCounter == 0) begin
+				canIWinDiagonallyLeft = FORTHEWIN; //I'm about to win
+			end else if (counter ==0 && oppCounter ==2) begin
+				canIWinDiagonallyLeft = BLOCK; //hes about to win make this my priority
+			end else begin
+				canIWinDiagonallyLeft = counter; //will return how close I am to winning diagonally left
+			end
+		end
 	endfunction
 
-/**
+	/**
 	  * Ok so my outputs here are going to be -2 if its garbage
 	  * TODO
  	  */
 	function integer canIWinDiagonallyRight(input [1:0] aaronCarpenterSucksEggs);
 		begin
-		integer counter =0;
-		integer oppCounter = 0;
-	
-		if (takenByX(board[2]))begin
-			//ok I got the top right corner
-			counter = counter + 1;
-		else if (takenByO(board[2]))begin
-			//he got top right
-			oppCounter = oppCounter + 1;
-		end
-		if(takenByX(board[4]))begin
-			//k i got the middle
-			counter = counter + 1;
-		else if (takenByO(board[4]))begin
-			//he got middle
-			oppCounter = oppCounter + 1;
-		end
-		if(takenByX(board[6]))begin
-			//ok i got bottom left
-			counter = counter + 1;
-		else if (takenByO(board[6]))begin
-			//he got bottom left
-			oppCounter = oppCounter + 1;
-		end
+			integer counter =0;
+			integer oppCounter = 0;
 		
-		if (counter == 3 || oppCounter == 3) begin
-			canIWinDiagonallyRight= EXIT_CODE; //somebody has 3 in a row
-		else if (counter !=0 && oppCounter != 0) begin
-			canIWinDiagonallyRight = CONTESTED; //no way to win here. He owns at least one tile and so do I
-		else if (counter == 2 && oppCounter == 0) begin
-			canIWinDiagonallyRight = FORTHEWIN;
-		else if (counter ==0 && oppCounter ==2) begin
-			canIWinDiagonallyRight = BLOCK; //hes about to win make this my priority
-		else begin
-			canIWinDiagonallyRight = counter; //will return how close I am to winning diagonally left
+			if (takenByX(board[2]))begin
+				//ok I got the top right corner
+				counter = counter + 1;
+			end else if (takenByO(board[2]))begin
+				//he got top right
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[4]))begin
+				//k i got the middle
+				counter = counter + 1;
+			end else if (takenByO(board[4]))begin
+				//he got middle
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[6]))begin
+				//ok i got bottom left
+				counter = counter + 1;
+			end else if (takenByO(board[6]))begin
+				//he got bottom left
+				oppCounter = oppCounter + 1;
+			end
+			
+			if (counter == 3 || oppCounter == 3) begin
+				canIWinDiagonallyRight= EXIT_CODE; //somebody has 3 in a row
+			end else if (counter !=0 && oppCounter != 0) begin
+				canIWinDiagonallyRight = CONTESTED; //no way to win here. He owns at least one tile and so do I
+			end else if (counter == 2 && oppCounter == 0) begin
+				canIWinDiagonallyRight = FORTHEWIN; //I'm about to win
+			end else if (counter ==0 && oppCounter ==2) begin
+				canIWinDiagonallyRight = BLOCK; //hes about to win make this my priority
+			end else begin
+				canIWinDiagonallyRight = counter; //will return how close I am to winning diagonally left
+			end
 		end
-
 	endfunction
 
-	/*
-	 * Method that checks if either player can win horizontally (about to win)
+	/**
+	 * Method that checks if the computer can win horizontally on the first row if not ranks how close or garbage
 	 */
 	function integer canIWinFirstRow(input tinaPoodInCarpentersBed);
 		
-			begin
-		integer counter =0;
-		integer oppCounter = 0;
-	
-		if (takenByX(board[0]))begin
-			//ok I got the top right corner
-			counter = counter + 1;
-		else if (takenByO(board[0]))begin
-			//he got top right
-			oppCounter = oppCounter + 1;
-		end
-		if(takenByX(board[1]))begin
-			//k i got the middle
-			counter = counter + 1;
-		else if (takenByO(board[1]))begin
-			//he got middle
-			oppCounter = oppCounter + 1;
-		end
-		if(takenByX(board[2]))begin
-			//ok i got bottom left
-			counter = counter + 1;
-		else if (takenByO(board[2]))begin
-			//he got bottom left
-			oppCounter = oppCounter + 1;
-		end
+		begin
+			integer counter =0;
+			integer oppCounter = 0;
 		
-		if (counter == 3 || oppCounter == 3) begin
-			canIWinFirstRow = EXIT_CODE; //somebody has 3 in a row
-		else if (counter !=0 && oppCounter != 0) begin
-			canIWinFirstRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
-		else if (counter == 2 && oppCounter == 0) begin
-			canIWinFirstRow = FORTHEWIN;
-		else if (counter ==0 && oppCounter ==2) begin
-			canIWinFirstRow = BLOCK; //hes about to win make this my priority
-		else begin
-			canIWinFirstRow = counter; //will return how close I am to winning diagonally left
+			if (takenByX(board[0]))begin
+				//ok I got the top right corner
+				counter = counter + 1;
+			end else if (takenByO(board[0]))begin
+				//he got top right
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[1]))begin
+				//k i got the middle
+				counter = counter + 1;
+			end else if (takenByO(board[1]))begin
+				//he got middle
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[2]))begin
+				//ok i got bottom left
+				counter = counter + 1;
+			end else if (takenByO(board[2]))begin
+				//he got bottom left
+				oppCounter = oppCounter + 1;
+			end
+			
+			if (counter == 3 || oppCounter == 3) begin
+				canIWinFirstRow = EXIT_CODE; //somebody has 3 in a row
+			end else if (counter !=0 && oppCounter != 0) begin
+				canIWinFirstRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
+			end else if (counter == 2 && oppCounter == 0) begin
+				canIWinFirstRow = FORTHEWIN; //I'm about to win
+			end else if (counter ==0 && oppCounter ==2) begin
+				canIWinFirstRow = BLOCK; //hes about to win make this my priority
+			end else begin
+				canIWinFirstRow = counter; //will return how close I am to winning diagonally left
+			end
 		end
 	endfunction
 
-function integer canIWinSecondRow(input tinaPoodInCarpentersBed);
+	/**
+	 * Method that checks if the computer can win horizontally on the second row if not ranks how close or garbage
+	 */
+	function integer canIWinSecondRow(input tinaPoodInCarpentersBed);
 		
-			begin
-		integer counter =0;
-		integer oppCounter = 0;
-	
-		if (takenByX(board[3]))begin
-			//ok I got the top right corner
-			counter = counter + 1;
-		else if (takenByO(board[3]))begin
-			//he got top right
-			oppCounter = oppCounter + 1;
-		end
-		if(takenByX(board[4]))begin
-			//k i got the middle
-			counter = counter + 1;
-		else if (takenByO(board[4]))begin
-			//he got middle
-			oppCounter = oppCounter + 1;
-		end
-		if(takenByX(board[5]))begin
-			//ok i got bottom left
-			counter = counter + 1;
-		else if (takenByO(board[5]))begin
-			//he got bottom left
-			oppCounter = oppCounter + 1;
-		end
+		begin
+			integer counter =0;
+			integer oppCounter = 0;
 		
-		if (counter == 3 || oppCounter == 3) begin
-			canIWinSecondRow = EXIT_CODE; //somebody has 3 in a row
-		else if (counter !=0 && oppCounter != 0) begin
-			canIWinSecondRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
-		else if (counter == 2 && oppCounter == 0) begin
-			canIWinSecondRow = FORTHEWIN;
-		else if (counter ==0 && oppCounter ==2) begin
-			canIWinSecondRow = BLOCK; //hes about to win make this my priority
-		else begin
-			canIWinSecondRow = counter; //will return how close I am to winning diagonally left
+			if (takenByX(board[3]))begin
+				//ok I got the top right corner
+				counter = counter + 1;
+			end else if (takenByO(board[3]))begin
+				//he got top right
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[4]))begin
+				//k i got the middle
+				counter = counter + 1;
+			end else if (takenByO(board[4]))begin
+				//he got middle
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[5]))begin
+				//ok i got bottom left
+				counter = counter + 1;
+			end else if (takenByO(board[5]))begin
+				//he got bottom left
+				oppCounter = oppCounter + 1;
+			end
+			
+			if (counter == 3 || oppCounter == 3) begin
+				canIWinSecondRow = EXIT_CODE; //somebody has 3 in a row
+			end else if (counter !=0 && oppCounter != 0) begin
+				canIWinSecondRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
+			end else if (counter == 2 && oppCounter == 0) begin
+				canIWinSecondRow = FORTHEWIN; //I'm about to win
+			end else if (counter ==0 && oppCounter ==2) begin
+				canIWinSecondRow = BLOCK; //hes about to win make this my priority
+			end else begin
+				canIWinSecondRow = counter; //will return how close I am to winning diagonally left
+			end
 		end
 	endfunction
 	
-function integer canIWinThirdRow(input alexPoodInCarpentersBedbutmostlytina);
+	/**
+	 * Method that checks if the computer can win horizontally on the third row if not ranks how close or garbage
+	 */
+	function integer canIWinThirdRow(input alexPoodInCarpentersBedbutmostlytina); //ew tina gross
 		
-			begin
-		integer counter =0;
-		integer oppCounter = 0;
+		begin
+			integer counter =0;
+			integer oppCounter = 0;
+		
+			if (takenByX(board[6]))begin
+				//ok I got the top right corner
+				counter = counter + 1;
+			end else if (takenByO(board[6]))begin
+				//he got top right
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[7]))begin
+				//k i got the middle
+				counter = counter + 1;
+			end else if (takenByO(board[7]))begin
+				//he got middle
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[8]))begin
+				//ok i got bottom left
+				counter = counter + 1;
+			end else if (takenByO(board[8]))begin
+				//he got bottom left
+				oppCounter = oppCounter + 1;
+			end
+			
+			if (counter == 3 || oppCounter == 3) begin
+				canIWinThirdRow = EXIT_CODE; //somebody has 3 in a row
+			end else if (counter !=0 && oppCounter != 0) begin
+				canIWinThirdRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
+			end else if (counter == 2 && oppCounter == 0) begin
+				canIWinThirdRow = FORTHEWIN; //I'm about to win
+			end else if (counter ==0 && oppCounter ==2) begin
+				canIWinThirdRow = BLOCK; //hes about to win make this my priority
+			end else begin
+				canIWinThirdRow = counter; //will return how close I am to winning diagonally left
+			end
+		end
+	endfunction
 	
-		if (takenByX(board[6]))begin
-			//ok I got the top right corner
-			counter = counter + 1;
-		else if (takenByO(board[6]))begin
-			//he got top right
-			oppCounter = oppCounter + 1;
-		end
-		if(takenByX(board[7]))begin
-			//k i got the middle
-			counter = counter + 1;
-		else if (takenByO(board[7]))begin
-			//he got middle
-			oppCounter = oppCounter + 1;
-		end
-		if(takenByX(board[8]))begin
-			//ok i got bottom left
-			counter = counter + 1;
-		else if (takenByO(board[8]))begin
-			//he got bottom left
-			oppCounter = oppCounter + 1;
-		end
+	
+	/**
+	 * Method that checks if the computer can win vertically on the first column if not ranks how close or garbage
+	 */
+	function integer canIWinFirstColumn(input aaronCarpenterHaveMyBabies);
 		
-		if (counter == 3 || oppCounter == 3) begin
-			canIWinThirdRow = EXIT_CODE; //somebody has 3 in a row
-		else if (counter !=0 && oppCounter != 0) begin
-			canIWinThirdRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
-		else if (counter == 2 && oppCounter == 0) begin
-			canIWinThirdRow = FORTHEWIN;
-		else if (counter ==0 && oppCounter ==2) begin
-			canIWinThirdRow = BLOCK; //hes about to win make this my priority
-		else begin
-			canIWinThirdRow = counter; //will return how close I am to winning diagonally left
+		begin
+			integer counter =0;
+			integer oppCounter = 0;
+		
+			if (takenByX(board[0]))begin
+				//ok I got the top left corner
+				counter = counter + 1;
+			end else if (takenByO(board[0]))begin
+				//he got top left
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[3]))begin
+				//k i got the middle left
+				counter = counter + 1;
+			end else if (takenByO(board[3]))begin
+				//he got middle left
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[6]))begin
+				//ok i got bottom left
+				counter = counter + 1;
+			end else if (takenByO(board[6]))begin
+				//he got bottom left
+				oppCounter = oppCounter + 1;
+			end
+			
+			if (counter == 3 || oppCounter == 3) begin
+				canIWinFirstColumn = EXIT_CODE; //somebody has 3 in a row
+			end else if (counter !=0 && oppCounter != 0) begin
+				canIWinFirstColumn = CONTESTED; //no way to win here. He owns at least one tile and so do I
+			end else if (counter == 2 && oppCounter == 0) begin
+				canIWinFirstColumn = FORTHEWIN; //I'm about to win
+			end else if (counter ==0 && oppCounter ==2) begin
+				canIWinFirstColumn = BLOCK; //hes about to win make this my priority
+			end else begin
+				canIWinFirstColumn = counter; //will return how close I am to winning diagonally left
+			end
 		end
+	endfunction
+	
+	
+	/**
+	 * Method that checks if the computer can win vertically on the second column if not ranks how close or garbage
+	 */
+	function integer canIWinSecondColumn(input aaronCarpenterIsTheSunshineOfMyLife);
+		
+		begin
+			integer counter =0;
+			integer oppCounter = 0;
+		
+			if (takenByX(board[1]))begin
+				//ok I got the top middle
+				counter = counter + 1;
+			end else if (takenByO(board[1]))begin
+				//he got top middle
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[4]))begin
+				//k i got the center
+				counter = counter + 1;
+			end else if (takenByO(board[4]))begin
+				//he got center
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[7]))begin
+				//ok i got bottom middle
+				counter = counter + 1;
+			end else if (takenByO(board[7]))begin
+				//he got bottom middle
+				oppCounter = oppCounter + 1;
+			end
+			
+			if (counter == 3 || oppCounter == 3) begin
+				canIWinThirdRow = EXIT_CODE; //somebody has 3 in a row
+			end else if (counter !=0 && oppCounter != 0) begin
+				canIWinThirdRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
+			end else if (counter == 2 && oppCounter == 0) begin
+				canIWinThirdRow = FORTHEWIN;
+			end else if (counter ==0 && oppCounter ==2) begin
+				canIWinThirdRow = BLOCK; //hes about to win make this my priority
+			end else begin
+				canIWinThirdRow = counter; //will return how close I am to winning diagonally left
+			end
+		end
+	endfunction
+	
+	/**
+	 * Method that checks if the computer can win vertically on the third column if not ranks how close or garbage
+	 */
+	function integer canIWinThirdColumn(input aaronCarpenterIsTheGuyWhoPaysForWinrar;
+		
+		begin
+			integer counter =0;
+			integer oppCounter = 0;
+		
+			if (takenByX(board[2]))begin
+				//ok I got the top right
+				counter = counter + 1;
+			end else if (takenByO(board[2]))begin
+				//he got top right
+				oppCounter = oppCounter + 1;
+			end
+		
+			if(takenByX(board[5]))begin
+				//k i got the center
+				counter = counter + 1;
+			end else if (takenByO(board[5]))begin
+				//he got center
+				oppCounter = oppCounter + 1;
+			end
+			
+			if(takenByX(board[7]))begin
+				//ok i got bottom middle
+				counter = counter + 1;
+			end else if (takenByO(board[7]))begin
+				//he got bottom middle
+				oppCounter = oppCounter + 1;
+			end
+			
+			if (counter == 3 || oppCounter == 3) begin
+				canIWinThirdRow = EXIT_CODE; //somebody has 3 in a row
+			end else if (counter !=0 && oppCounter != 0) begin
+				canIWinThirdRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
+			end else if (counter == 2 && oppCounter == 0) begin
+				canIWinThirdRow = FORTHEWIN;
+			end else if (counter ==0 && oppCounter ==2) begin
+				canIWinThirdRow = BLOCK; //hes about to win make this my priority
+			end else begin
+				canIWinThirdRow = counter; //will return how close I am to winning diagonally left
+			end
+			
+			end //IDK WHAT THE FUCK IS GOING ON WITH THE BRACKETS ITS FUCKED
+		end
+	
 	endfunction
 
 	/**
@@ -279,10 +444,11 @@ function integer canIWinThirdRow(input alexPoodInCarpentersBedbutmostlytina);
 	  */
 	function integer takenByX(integer specificSpot);
 		begin
-		if (specificSpot == 2)begin
-			takenByX = 1;
-		else begin
-			takenByX = 0;
+			if (specificSpot == 2)begin
+				takenByX = 1;
+			end else begin
+				takenByX = 0;
+			end
 		end
 	endfunction
 	
@@ -291,10 +457,11 @@ function integer canIWinThirdRow(input alexPoodInCarpentersBedbutmostlytina);
 	  */
 	function integer takenByO(integer specificSpot);
 		begin
-		if (specificSpot == 1) begin
-			takenByO = 1;
-		else begin
-			takenByO = 0;
+			if (specificSpot == 1) begin
+				takenByO = 1;
+			end else begin
+				takenByO = 0;
+			end
 		end
 	endfunction
 	
@@ -302,11 +469,13 @@ function integer canIWinThirdRow(input alexPoodInCarpentersBedbutmostlytina);
 	  * Returns a 1 if its empty, 0 otherwise
 	  */
 	function integer isEmpty(integer specificSpot);
-		if (specificSpot == 0) begin
-			isEmpty = 1;
-		else begin
-			isEmpty = 0;
-		end
+		begin
+			if (specificSpot == 0) begin
+				isEmpty = 1;
+			end else begin
+				isEmpty = 0;
+			end
+		end 
 	endfunction
 
 
@@ -320,10 +489,10 @@ function integer canIWinThirdRow(input alexPoodInCarpentersBedbutmostlytina);
 	//isTakenByO done
 	//isEmpty done
 	//print the board HANDLED BY MONITOR
-	//can I win horizontally
-	//can i win vertically
+	//can I win horizontally done row by row for fault reasons and to make it easier to flag which row had what.
+	//can i win vertically good but brackets are fucked up in third one. cant spot error
 	//can i win diagonally left ok
-	//can i win diagonally right 
+	//can i win diagonally right ok
 	//init the board CHECK
 	//is the board filled CHECK
 
