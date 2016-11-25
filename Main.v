@@ -143,7 +143,7 @@ module top;
 					//middle is always priority
 					board[4]=X;
 				end 
-				else if (isEmpty(board[6]) begin
+				else if (isEmpty(board[6])) begin
 					//I already had middle take bottom left
 					board[6] =X;
 				end
@@ -151,9 +151,8 @@ module top;
 					//I already had bottom left and middle take top right. Could add redundancy
 					board[2]=X;
 				end
-			end //IDK WHY THE BRACKETS ARE SO FUCKING DUMB. WHY THE FUCK DO I NEED TWO OF THESE
+			end 
 			//Verilog is the kid who just licks the walls in elementary school
-			end //something is really fucked up with brackets
 			else if (myPriority == VERT1) begin
 				if (isEmpty(board[0])) begin
 					//top left
@@ -161,7 +160,7 @@ module top;
 				end else if (isEmpty(board[3])) begin
 					//middle left
 					board[3] = X;
-				end else if (isEmpty(board[6]) begin
+				end else if (isEmpty(board[6])) begin
 					//bottom left
 					board[6] = X;
 				end
@@ -226,12 +225,8 @@ module top;
 					board[8] = X;
 				end
 			end
-		end end //fuck the brackets I seriously cant understand how they work
+		end
 	endtask
-				
-				
-	
-	
 	
 	
 	
@@ -244,7 +239,7 @@ module top;
 		begin
 			//basically we have not set a priority and need to find a move
 			for (integer box = 0; box < 9; box++) begin
-				if (isEmpty(board[box])begin
+				if (isEmpty(board[box]))begin
 					board[box] = 2; //so yes, this can trip multiple 
 					//times which means we only call it when it absolutely is necessary
 				end
@@ -689,7 +684,6 @@ module top;
 			end
 		end 
 	endfunction
-
 
 
 	//determine turn
