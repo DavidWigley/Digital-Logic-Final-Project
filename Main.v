@@ -656,7 +656,7 @@ module top;
 	  */
 	function integer takenByX(integer specificSpot);
 		begin
-			if (specificSpot == 2)begin
+			if (specificSpot == X)begin
 				takenByX = 1;
 			end else begin
 				takenByX = 0;
@@ -669,7 +669,7 @@ module top;
 	  */
 	function integer takenByO(integer specificSpot);
 		begin
-			if (specificSpot == 1) begin
+			if (specificSpot == O) begin
 				takenByO = 1;
 			end else begin
 				takenByO = 0;
@@ -682,7 +682,7 @@ module top;
 	  */
 	function integer isEmpty(integer specificSpot);
 		begin
-			if (specificSpot == 0) begin
+			if (specificSpot == EMPTY) begin
 				isEmpty = 1;
 			end else begin
 				isEmpty = 0;
