@@ -1,4 +1,4 @@
-`define EXITCODE = 999
+`define EXIT_CODE = 999
 `define CONTESTED = -2
 `define FORTHEWIN = 666
 `define BLOCK = 3
@@ -55,7 +55,7 @@ module top;
 			//outer loop is for every single spot
 			for (integer box =0; box < 9; box++)begin
 				//inner loop is for every bit in the spot
-				board[box] = EMPTY; //set everything to 0	
+				board[box] = `EMPTY; //set everything to 0	
 			end
 		end
 	endtask
@@ -65,9 +65,9 @@ module top;
 	 */
 	function reg checkIfFinished(input verilogIsTrash);
 		begin
-			if (canIWinDiagonallyLeft(1) == EXIT_CODE || canIWinDiagonallyRight(1) == EXIT_CODE || 
-					canIWinFirstRow(1) == EXIT_CODE || canIWinSecondRow(1) == EXIT_CODE || canIWinThirdRow(1) || 
-					canIWinFirstColumn(1) == EXIT_CODE || canIWinSecondColumn(1) == EXIT_CODE || canIWinThirdColumn(1) == EXIT_CODE ||
+			if (canIWinDiagonallyLeft(1) == 'EXIT_CODE || canIWinDiagonallyRight(1) == 'EXIT_CODE || 
+					canIWinFirstRow(1) == 'EXIT_CODE || canIWinSecondRow(1) == 'EXIT_CODE || canIWinThirdRow(1) || 
+					canIWinFirstColumn(1) == 'EXIT_CODE || canIWinSecondColumn(1) == 'EXIT_CODE || canIWinThirdColumn(1) == 'EXIT_CODE ||
 					isBoardFull(1) == 1)
 				begin
 					//someone won somehow or the board was filled	
@@ -94,43 +94,43 @@ module top;
 			//These must be if's and not else ifs because they all need to check. Else if would break after 1.
 			//If these things run in parallel and I get threading problems I'm going to be upset
 			if (canIWinDiagonallyLeft(1) > currentMatches) begin
-				myPriority = LDIAG;
+				myPriority = 'LDIAG;
 				currentMatches = canIWinDiagonallyLeft(1);
 			end
 
 			if (canIWinDiagonallyRight(1) > currentMatches) begin
 				currentMatches = canIWinDiagonallyRight(1);
-				myPriority = RDIAG;
+				myPriority = 'RDIAG;
 			end
 
 			if (canIWinFirstColumn(1) > currentMatches) begin
 				currentMatches = canIWinFirstColumn(1);
-				myPriority = VERT1;
+				myPriority = 'VERT1;
 			end
 			
 			if (canIWinSecondColumn(1) > currentMatches) begin
 				currentMatches = canIWinSecondColumn(1);
-				myPriority = VERT2;
+				myPriority = 'VERT2;
 			end 
 			
 			if (canIWinThirdColumn(1) > currentMatches) begin
 				currentMatches = canIWinThirdColumn(1);
-				myPriority = VERT3;
+				myPriority = 'VERT3;
 			end
 			
 			 if (canIWinFirstRow(1) > currentMatches) begin
 				currentMatches = canIWinFirstRow(1);
-				myPriority = HORIZ1;
+				myPriority = 'HORIZ1;
 			end
 			
 			if (canIWinSecondRow(1) > currentMatches) begin
 				currentMatches = canIWinSecondRow(1);
-				myPriority = HORIZ2;
+				myPriority = 'HORIZ2;
 			end
 			
 			if (canIWinThirdRow(1) > currentMatches) begin
 				currentMatches = canIWinThirdRow(1)
-				myPriority = HORIZ3;
+				myPriority = 'HORIZ3;
 			end
 		end
 		
@@ -143,105 +143,105 @@ module top;
 	 */
 	task insertX();
 		begin
-			if (myPriority== LDIAG) begin
+			if (myPriority== 'LDIAG) begin
 				//checks all the left diag spots to find missing and fill
 				if (isEmpty(board[4])) begin
 					//middle is always priority
-					board[4]=X;
+					board[4]=`X;
 				end else if (isEmpty(board[0])) begin
 					//I already had middle take top left
-					board[0]=X;
+					board[0]=`X;
 				end else begin
 					//I already had top left and middle take bottom right. Could add redundancy
-					board[8]=X;
+					board[8]=`X;
 				end
 			end
-			else if(myPriority==RDIAG) begin
+			else if(myPriority=='RDIAG) begin
 				//checks all the right diag spots to find missing and fill
 				if (isEmpty(board[4])) begin
 					//middle is always priority
-					board[4]=X;
+					board[4]=`X;
 				end 
 				else if (isEmpty(board[6])) begin
 					//I already had middle take bottom left
-					board[6] =X;
+					board[6] =`X;
 				end
 				else begin
 					//I already had bottom left and middle take top right. Could add redundancy
-					board[2]=X;
+					board[2]=`X;
 				end
 			end 
 			//Verilog is the kid who just licks the walls in elementary school
-			else if (myPriority == VERT1) begin
+			else if (myPriority == 'VERT1) begin
 				if (isEmpty(board[0])) begin
 					//top left
-					board[0] = X;
+					board[0] = `X;
 				end else if (isEmpty(board[3])) begin
 					//middle left
-					board[3] = X;
+					board[3] = `X;
 				end else if (isEmpty(board[6])) begin
 					//bottom left
-					board[6] = X;
+					board[6] = `X;
 				end
-			end  //gotta love the brackets
-			else if (myPriority == VERT2) begin
+			end 
+			else if (myPriority == 'VERT2) begin
 				if (isEmpty(board[1])) begin
 					//top middle
-					board[1] = X;
+					board[1] = `X;
 				end else if (isEmpty(board[4])) begin
 					//middle middle 
-					board[4] = X;
+					board[4] = `X;
 				end else if (isEmpty(board[7])) begin
 					//bottom middle
-					board[7] = X;
+					board[7] = `X;
 				end
 			end 
-			else if (myPriority == VERT3) begin
+			else if (myPriority == 'VERT3) begin
 				if (isEmpty(board[2])) begin
 					//top right
-					board[2] = X;
+					board[2] = `X;
 				end else if (isEmpty(board[5])) begin
 					//middle right 
-					board[5] = X;
+					board[5] = `X;
 				end else if (isEmpty(board[8])) begin
 					//bottom right
-					board[8] = X;
+					board[8] = `X;
 				end
 			end 
-			else if (myPriority == HORIZ1) begin
+			else if (myPriority == 'HORIZ1) begin
 				if (isEmpty(board[0])) begin
 					//top left
-					board[0] = X;
+					board[0] = `X;
 				end else if (isEmpty(board[1])) begin
 					//top middle 
-					board[1] = X;
+					board[1] = `X;
 				end else if (isEmpty(board[2])) begin
 					//bottom middle
-					board[2] = X;
+					board[2] = `X;
 				end
 			end
-			else if (myPriority == HORIZ2) begin
+			else if (myPriority == 'HORIZ2) begin
 				if (isEmpty(board[3])) begin
 					//middle left
-					board[3] = X;
+					board[3] = `X;
 				end else if (isEmpty(board[4])) begin
 					//middle middle 
-					board[4] = X;
+					board[4] = `X;
 				end else if (isEmpty(board[5])) begin
 					//middle right
-					board[5] = X;
+					board[5] = `X;
 				end
 			end
-			else if (myPriority == HORIZ3) begin
+			else if (myPriority == 'HORIZ3) begin
 				if (isEmpty(board[6])) begin
 					//bottom left
-					board[6] = X;
+					board[6] = `X;
 				end else if (isEmpty(board[7])) begin
 					//bottom middle
-					board[7] = X;
+					board[7] = `X;
 				end else if (isEmpty(board[8])) begin
 					//bottom right
-					board[8] = X;
+					board[8] = `X;
 				end
 			end
 		end
@@ -318,13 +318,13 @@ module top;
 			end
 
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinDiagonallyLeft = EXIT_CODE; //somebody has 3 in a row
+				canIWinDiagonallyLeft = 'EXIT_CODE; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinDiagonallyLeft = CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinDiagonallyLeft = `CONTESTED; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinDiagonallyLeft = FORTHEWIN; //I'm about to win
+				canIWinDiagonallyLeft = 'FORTHEWIN; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinDiagonallyLeft = BLOCK; //hes about to win make this my priority
+				canIWinDiagonallyLeft = `BLOCK; //hes about to win make this my priority
 			end else begin
 				canIWinDiagonallyLeft = counter; //will return how close I am to winning diagonally left
 			end
@@ -365,13 +365,13 @@ module top;
 			end
 			
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinDiagonallyRight= EXIT_CODE; //somebody has 3 in a row
+				canIWinDiagonallyRight= 'EXIT_CODE; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinDiagonallyRight = CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinDiagonallyRight = `CONTESTED; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinDiagonallyRight = FORTHEWIN; //I'm about to win
+				canIWinDiagonallyRight = 'FORTHEWIN; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinDiagonallyRight = BLOCK; //hes about to win make this my priority
+				canIWinDiagonallyRight = `BLOCK; //hes about to win make this my priority
 			end else begin
 				canIWinDiagonallyRight = counter; //will return how close I am to winning diagonally left
 			end
@@ -412,13 +412,13 @@ module top;
 			end
 			
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinFirstRow = EXIT_CODE; //somebody has 3 in a row
+				canIWinFirstRow = 'EXIT_CODE; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinFirstRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinFirstRow = `CONTESTED; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinFirstRow = FORTHEWIN; //I'm about to win
+				canIWinFirstRow = 'FORTHEWIN; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinFirstRow = BLOCK; //hes about to win make this my priority
+				canIWinFirstRow = `BLOCK; //hes about to win make this my priority
 			end else begin
 				canIWinFirstRow = counter; //will return how close I am to winning diagonally left
 			end
@@ -459,13 +459,13 @@ module top;
 			end
 			
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinSecondRow = EXIT_CODE; //somebody has 3 in a row
+				canIWinSecondRow = 'EXIT_CODE; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinSecondRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinSecondRow = `CONTESTED; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinSecondRow = FORTHEWIN; //I'm about to win
+				canIWinSecondRow = 'FORTHEWIN; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinSecondRow = BLOCK; //hes about to win make this my priority
+				canIWinSecondRow = `BLOCK; //hes about to win make this my priority
 			end else begin
 				canIWinSecondRow = counter; //will return how close I am to winning diagonally left
 			end
@@ -506,13 +506,13 @@ module top;
 			end
 			
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinThirdRow = EXIT_CODE; //somebody has 3 in a row
+				canIWinThirdRow = 'EXIT_CODE; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinThirdRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinThirdRow = `CONTESTED; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinThirdRow = FORTHEWIN; //I'm about to win
+				canIWinThirdRow = 'FORTHEWIN; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinThirdRow = BLOCK; //hes about to win make this my priority
+				canIWinThirdRow = `BLOCK; //hes about to win make this my priority
 			end else begin
 				canIWinThirdRow = counter; //will return how close I am to winning diagonally left
 			end
@@ -554,13 +554,13 @@ module top;
 			end
 			
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinFirstColumn = EXIT_CODE; //somebody has 3 in a row
+				canIWinFirstColumn = 'EXIT_CODE; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinFirstColumn = CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinFirstColumn = `CONTESTED; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinFirstColumn = FORTHEWIN; //I'm about to win
+				canIWinFirstColumn = 'FORTHEWIN; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinFirstColumn = BLOCK; //hes about to win make this my priority
+				canIWinFirstColumn = `BLOCK; //hes about to win make this my priority
 			end else begin
 				canIWinFirstColumn = counter; //will return how close I am to winning diagonally left
 			end
@@ -602,15 +602,15 @@ module top;
 			end
 			
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinThirdRow = EXIT_CODE; //somebody has 3 in a row
+				canIWinSecondColumn = 'EXIT_CODE; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinThirdRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinSecondColumn = `CONTESTED; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinThirdRow = FORTHEWIN;
+				canIWinSecondColumn = 'FORTHEWIN;
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinThirdRow = BLOCK; //hes about to win make this my priority
+				canIWinSecondColumn = `BLOCK; //hes about to win make this my priority
 			end else begin
-				canIWinThirdRow = counter; //will return how close I am to winning diagonally left
+				canIWinSecondColumn = counter; //will return how close I am to winning diagonally left
 			end
 		end
 	endfunction
@@ -649,13 +649,13 @@ module top;
 			end
 			
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinThirdRow = EXIT_CODE; //somebody has 3 in a row
+				canIWinThirdRow = 'EXIT_CODE; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinThirdRow = CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinThirdRow = `CONTESTED; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinThirdRow = FORTHEWIN;
+				canIWinThirdRow = 'FORTHEWIN;
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinThirdRow = BLOCK; //hes about to win make this my priority
+				canIWinThirdRow = `BLOCK; //hes about to win make this my priority
 			end else begin
 				canIWinThirdRow = counter; //will return how close I am to winning diagonally left
 			end
@@ -668,9 +668,9 @@ module top;
 	/**
 	  * Returns a 1 if its taken by an X, 0 otherwise
 	  */
-	function integer takenByX(integer specificSpot);
+	function real takenByX(integer specificSpot);
 		begin
-			if (specificSpot == X)begin
+			if (specificSpot == `X)begin
 				takenByX = 1;
 			end else begin
 				takenByX = 0;
@@ -681,9 +681,9 @@ module top;
 	/**
 	  * Returns a 1 if its taken by an O, 0 otherwise
 	  */
-	function integer takenByO(integer specificSpot);
+	function real takenByO(integer specificSpot);
 		begin
-			if (specificSpot == O) begin
+			if (specificSpot == 'O) begin
 				takenByO = 1;
 			end else begin
 				takenByO = 0;
@@ -694,20 +694,46 @@ module top;
 	/**
 	  * Returns a 1 if its empty, 0 otherwise
 	  */
-	function integer isEmpty(integer specificSpot);
+	function real isEmpty(integer specificSpot);
 		begin
-			if (specificSpot == EMPTY) begin
+			if (specificSpot == `EMPTY) begin
 				isEmpty = 1;
 			end else begin
 				isEmpty = 0;
 			end
 		end 
 	endfunction
+	
+	/* Might go turn by turn as in deploy by deploy
+	
+	/*
+	 * I'm not actually sure if we want this. Basically tells whos turn it is but I'm not sure if we want to do this. IDK
+	 
+	function real determineTurn(real blah);
+		begin
+			integer xCounter = 0;
+			integer oCounter = 0;
+			for (int i = 0; i < 9; i++) begin
+					if (board[i]== `X) begin
+						xCounter++;
+					end else if (board[i] == 'O) begin
+						oCounter++;
+					end
+			end
+			
+			if (xCounter > oCounter) begin
+				determineTurn =  'O; //there are more x's on the board than o's its the o's turn
+			end else begin
+				determineTurn = `X;
+			end
+		end
+	endfunction
 
-
+	*/
+	
 	//determine turn
 	//check if finished (check if three in row and check if the board is filled) cool
-	//simulate game
+	//simulate game....confused as to how to implement. Supposedly we do test cases similar to how the calculator was and dont do keyboard input
 	//determine Priority check
 	//insertCharacter check
 	//isTakenByX //done
