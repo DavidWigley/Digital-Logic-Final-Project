@@ -21,19 +21,46 @@
 
 module test();
 
+reg sendSignal = 0;
 integer userInput = -1;
-simulation(userInput);
+simulation(userInput,sendSignal);
 
 initial begin
 	#2 userInput = 5;
+	   sendSignal = 1;
+	#1 sendSignal = 0;
 	#5 userInput = 8;
+	   sendSignal = 1;
+	#1 sendSignal = 0;
 	#5 userInput = 3;
+	   sendSignal = 1;
+	#1 sendSignal = 0;
 
 end
 
 endmodule
 
-module simulation(integer userInput);
+module simulation(integer userInput,reg sendSignal);
+
+	integer canIWinFirstRow;
+	integer canIWinSecondRow;
+	integer canIWinThirdRow;
+	integer canIWinFirstColumn;
+	integer canIWinSecondColumn;
+	integer canIWinThirdColumn;
+	integer canIWinDiagonallyLeft;
+	integer canIWinDiagonallyRight;
+
+	reg isEmpty0 =0;
+	reg isEmpty1 =0;
+	reg isEmpty2 =0;
+	reg isEmpty3 =0;
+	reg isEmpty4 =0;
+	reg isEmpty5 =0;
+	reg isEmpty6 =0;
+	reg isEmpty7 =0;
+	reg isEmpty8 =0;
+
 
 	wire [7:0]result;
 	wire overflow;
@@ -43,6 +70,8 @@ module simulation(integer userInput);
 	//I dont want to deal with passing this shit around and we're not graded on efficiency ... SO GLOBAL :)
 	integer currentMatches = -1; //essentially how many x's I have in a certain winning combo unless its blocked
 	integer myPriority = -1; //matches and priority are both keywords. Basically fuck verilog, its just too good.
+	integer checkIfFinished = 0;
+	integer isBoardFull = 0; //its full unless I say otherwise
 
 	//Here is what the board will look like
 	//  0    1    2
@@ -57,7 +86,7 @@ module simulation(integer userInput);
 	end
 
 
-	always@* begin
+	always@(posedge sendSignal)begin
 		if (userInput > 8 || userInput < 0)begin
 			errorMessage = -1;
 		end
@@ -95,7 +124,7 @@ module simulation(integer userInput);
 	  * 2 = X
 	  * else means something is fucked
       */
-	task initBoard();
+	task initBoard(); begin
 		board[0] = `EMPTY;
 		board[1] = `EMPTY;
 		board[2] = `EMPTY;
@@ -110,19 +139,19 @@ module simulation(integer userInput);
 				//inner loop is for every bit in the spot
 				board[box] = `EMPTY; //set everything to 0
 			end */
-
+	end
 	endtask
 
 
 	/*
 	 * Function that will see if the game is finished or not. Bool return (in verilog its reg because verilog is so damn cool)
 	 */
-	function reg checkIfFinished(input verilogIsTrash);
+	task checkIfFinished();
 		begin
-			if (canIWinDiagonallyLeft(1) == `EXIT_CODE || canIWinDiagonallyRight(1) == `EXIT_CODE ||
-					canIWinFirstRow(1) == `EXIT_CODE || canIWinSecondRow(1) == `EXIT_CODE || canIWinThirdRow(1) ||
-					canIWinFirstColumn(1) == `EXIT_CODE || canIWinSecondColumn(1) == `EXIT_CODE || canIWinThirdColumn(1) == `EXIT_CODE ||
-					isBoardFull(1) == 1)
+			if (canIWinDiagonallyLeft == `EXIT_CODE || canIWinDiagonallyRight == `EXIT_CODE ||
+					canIWinFirstRow == `EXIT_CODE || canIWinSecondRow == `EXIT_CODE || canIWinThirdRow ||
+					canIWinFirstColumn == `EXIT_CODE || canIWinSecondColumn == `EXIT_CODE || canIWinThirdColumn == `EXIT_CODE ||
+					isBoardFull == 1)
 				begin
 					//someone won somehow or the board was filled
 					checkIfFinished = 1;
@@ -133,13 +162,20 @@ module simulation(integer userInput);
 				checkIfFinished = 0; //nobody has won yet
 			end
 		end
-	endfunction
-
+	endtask
 	/*
 	 * Method that will search through winning combinations and prioritize a move depending on the board's current layout
 	 */
 	task determinePriority();
 		begin
+			canIWinFirstRow();
+			canIWinSecondRow();
+			canIWinThirdRow();
+			canIWinFirstColumn();
+			canIWinSecondColumn();
+			canIWinThirdColumn();
+			canIWinDiagonallyLeft();
+			canIWinDiagonallyRight();
 			//So basically this logic will look to see if I can win immediately or stop him
 			//from winning immediately. If I cant then I'll choose the next best possible option prioritizing the diags
 			currentMatches = -1;
@@ -147,48 +183,46 @@ module simulation(integer userInput);
 
 			//These must be if's and not else ifs because they all need to check. Else if would break after 1.
 			//If these things run in parallel and I get threading problems I'm going to be upset
-			if (canIWinDiagonallyLeft(1) > currentMatches) begin
+			if (canIWinDiagonallyLeft > currentMatches) begin
 				myPriority = `LDIAG;
-				currentMatches = canIWinDiagonallyLeft(1);
+				currentMatches = canIWinDiagonallyLeft;
 			end
 
-			if (canIWinDiagonallyRight(1) > currentMatches) begin
-				currentMatches = canIWinDiagonallyRight(1);
+			if (canIWinDiagonallyRight > currentMatches) begin
+				currentMatches = canIWinDiagonallyRight;
 				myPriority = `RDIAG;
 			end
 
-			if (canIWinFirstColumn(1) > currentMatches) begin
-				currentMatches = canIWinFirstColumn(1);
+			if (canIWinFirstColumn > currentMatches) begin
+				currentMatches = canIWinFirstColumn;
 				myPriority = `VERT1;
 			end
 
-			if (canIWinSecondColumn(1) > currentMatches) begin
-				currentMatches = canIWinSecondColumn(1);
+			if (canIWinSecondColumn > currentMatches) begin
+				currentMatches = canIWinSecondColumn;
 				myPriority = `VERT2;
 			end
 
-			if (canIWinThirdColumn(1) > currentMatches) begin
-				currentMatches = canIWinThirdColumn(1);
+			if (canIWinThirdColumn > currentMatches) begin
+				currentMatches = canIWinThirdColumn;
 				myPriority = `VERT3;
 			end
 
-			 if (canIWinFirstRow(1) > currentMatches) begin
-				currentMatches = canIWinFirstRow(1);
+			 if (canIWinFirstRow > currentMatches) begin
+				currentMatches = canIWinFirstRow;
 				myPriority = `HORIZ1;
 			end
 
-			if (canIWinSecondRow(1) > currentMatches) begin
-				currentMatches = canIWinSecondRow(1);
+			if (canIWinSecondRow > currentMatches) begin
+				currentMatches = canIWinSecondRow;
 				myPriority = `HORIZ2;
 			end
 
-			if (canIWinThirdRow(1) > currentMatches) begin
-				currentMatches = canIWinThirdRow(1);
+			if (canIWinThirdRow > currentMatches) begin
+				currentMatches = canIWinThirdRow;
 				 myPriority = `HORIZ3;
 			end
 		end
-
-
 	endtask
 
 	/*
@@ -198,10 +232,10 @@ module simulation(integer userInput);
 		begin
 			if (myPriority== `LDIAG) begin
 				//checks all the left diag spots to find missing and fill
-				if (isEmpty(board[4])) begin
+				if (isEmpty4 == 1) begin
 					//middle is always priority
 					board[4]=`X;
-				end else if (isEmpty(board[0])) begin
+				end else if (isEmpty0 == 1) begin
 					//I already had middle take top left
 					board[0]=`X;
 				end else begin
@@ -211,11 +245,11 @@ module simulation(integer userInput);
 			end
 			else if(myPriority==`RDIAG) begin
 				//checks all the right diag spots to find missing and fill
-				if (isEmpty(board[4])) begin
+				if (isEmpty4==1) begin
 					//middle is always priority
 					board[4]=`X;
 				end
-				else if (isEmpty(board[6])) begin
+				else if (isEmpty6==1) begin
 					//I already had middle take bottom left
 					board[6] =`X;
 				end
@@ -226,73 +260,73 @@ module simulation(integer userInput);
 			end
 			//Verilog is the kid who just licks the walls in elementary school
 			else if (myPriority == `VERT1) begin
-				if (isEmpty(board[0])) begin
+				if (isEmpty0==1) begin
 					//top left
 					board[0] = `X;
-				end else if (isEmpty(board[3])) begin
+				end else if (isEmpty3==1) begin
 					//middle left
 					board[3] = `X;
-				end else if (isEmpty(board[6])) begin
+				end else if (isEmpty6==1) begin
 					//bottom left
 					board[6] = `X;
 				end
 			end
 			else if (myPriority == `VERT2) begin
-				if (isEmpty(board[1])) begin
+				if (isEmpty1 ==1) begin
 					//top middle
 					board[1] = `X;
-				end else if (isEmpty(board[4])) begin
+				end else if (isEmpty4 ==1) begin
 					//middle middle
 					board[4] = `X;
-				end else if (isEmpty(board[7])) begin
+				end else if (isEmpty7==1) begin
 					//bottom middle
 					board[7] = `X;
 				end
 			end
 			else if (myPriority == `VERT3) begin
-				if (isEmpty(board[2])) begin
+				if (isEmpty2 ==1) begin
 					//top right
 					board[2] = `X;
-				end else if (isEmpty(board[5])) begin
+				end else if (isEmpty5 ==1) begin
 					//middle right
 					board[5] = `X;
-				end else if (isEmpty(board[8])) begin
+				end else if (isEmpty8 ==1) begin
 					//bottom right
 					board[8] = `X;
 				end
 			end
 			else if (myPriority == `HORIZ1) begin
-				if (isEmpty(board[0])) begin
+				if (isEmpty0 == 1) begin
 					//top left
 					board[0] = `X;
-				end else if (isEmpty(board[1])) begin
+				end else if (isEmpty1 ==1) begin
 					//top middle
 					board[1] = `X;
-				end else if (isEmpty(board[2])) begin
+				end else if (isEmpty2 ==1) begin
 					//bottom middle
 					board[2] = `X;
 				end
 			end
 			else if (myPriority == `HORIZ2) begin
-				if (isEmpty(board[3])) begin
+				if (isEmpty3 ==1) begin
 					//middle left
 					board[3] = `X;
-				end else if (isEmpty(board[4])) begin
+				end else if (isEmpty4 ==1) begin
 					//middle middle
 					board[4] = `X;
-				end else if (isEmpty(board[5])) begin
+				end else if (isEmpty5 ==1) begin
 					//middle right
 					board[5] = `X;
 				end
 			end
 			else if (myPriority == `HORIZ3) begin
-				if (isEmpty(board[6])) begin
+				if (isEmpty6 ==1) begin
 					//bottom left
 					board[6] = `X;
-				end else if (isEmpty(board[7])) begin
+				end else if (isEmpty7 ==1) begin
 					//bottom middle
 					board[7] = `X;
-				end else if (isEmpty(board[8])) begin
+				end else if (isEmpty8 == 1) begin
 					//bottom right
 					board[8] = `X;
 				end
@@ -354,10 +388,9 @@ module simulation(integer userInput);
 	/**
  	  * Says its full unless I find an instance where its not
 	  */
-	function reg isBoardFull(input in);
+	task isBoardFull();
 		begin
-			integer isBoardFull = 1; //its full unless I say otherwise
-
+	 isBoardFull = 1; //assume board is full unless proven otherwise
 		if (board[0] == `EMPTY && isBoardFull==1)begin
 		isBoardFull =0;
 		end
@@ -386,6 +419,7 @@ module simulation(integer userInput);
 		isBoardFull =0;
 		end
 
+
 			//outer loop is for every single spot
 			/*for (integer box =0; box < 9; box ++) begin
 				//inner loop is for every bit in the spot
@@ -396,38 +430,38 @@ module simulation(integer userInput);
 			end*/
 
 		end
-	endfunction
+	endtask
 
 
 	/**
 	  * Ok so my outputs here are going to be -2 if its garbage
 	  * TODO
  	  */
-	function integer canIWinDiagonallyLeft(input aaronCarpenterSucksEggs);
+	task canIWinDiagonallyLeft();
 		begin
 			integer counter =0;
 			integer oppCounter = 0;
 
-			if (takenByX(board[0]))begin
+			if (board[0] == `X)begin
 				//ok I got the top left corner
 				counter = counter + 1;
-			end else if (takenByO(board[0]))begin
+			end else if (board[0] == `O )begin
 				//he got top left
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[4]))begin
+			if(board[4] == `X)begin
 				//k i got the middle
 				counter = counter + 1;
-			end else if (takenByO(board[4]))begin
+			end else if (board[4] == `O)begin
 				//he got middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[8]))begin
+			if(board[8] == `X)begin
 				//ok i got bottom right
 				counter = counter + 1;
-			end else if (takenByO(board[8]))begin
+			end else if (board[8] == `O)begin
 				//he got bottom right
 				oppCounter = oppCounter + 1;
 			end
@@ -450,31 +484,31 @@ module simulation(integer userInput);
 	  * Ok so my outputs here are going to be -2 if its garbage
 	  * TODO
  	  */
-	function integer canIWinDiagonallyRight(input aaronCarpenterSucksEggs);
+	task canIWinDiagonallyRight();
 		begin
 			integer counter =0;
 			integer oppCounter = 0;
 
-			if (takenByX(board[2]))begin
+			if (board[2] == `X)begin
 				//ok I got the top right corner
 				counter = counter + 1;
-			end else if (takenByO(board[2]))begin
+			end else if (board[2]==`O)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[4]))begin
+			if(board[4]== `X)begin
 				//k i got the middle
 				counter = counter + 1;
-			end else if (takenByO(board[4]))begin
+			end else if (board[4]==`O)begin
 				//he got middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[6]))begin
+			if(board[6] == `X)begin
 				//ok i got bottom left
 				counter = counter + 1;
-			end else if (takenByO(board[6]))begin
+			end else if (board[6] ==`O)begin
 				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
@@ -491,37 +525,37 @@ module simulation(integer userInput);
 				canIWinDiagonallyRight = counter; //will return how close I am to winning diagonally left
 			end
 		end
-	endfunction
+	endtask
 
 	/**
 	 * Method that checks if the computer can win horizontally on the first row if not ranks how close or garbage
 	 */
-	function integer canIWinFirstRow(input tinaPoodInCarpentersBed);
+	task canIWinFirstRow();
 
 		begin
 			integer counter =0;
 			integer oppCounter = 0;
 
-			if (takenByX(board[0]))begin
+			if (board[0] == `X)begin
 				//ok I got the top right corner
 				counter = counter + 1;
-			end else if (takenByO(board[0]))begin
+			end else if (board[0] == `O)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[1]))begin
+			if(board[1] == `X)begin
 				//k i got the middle
 				counter = counter + 1;
-			end else if (takenByO(board[1]))begin
+			end else if (board[1] == `O)begin
 				//he got middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[2]))begin
+			if(board[2] == `X)begin
 				//ok i got bottom left
 				counter = counter + 1;
-			end else if (takenByO(board[2]))begin
+			end else if (board[2] == `O)begin
 				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
@@ -538,37 +572,37 @@ module simulation(integer userInput);
 				canIWinFirstRow = counter; //will return how close I am to winning diagonally left
 			end
 		end
-	endfunction
+	endtask
 
 	/**
 	 * Method that checks if the computer can win horizontally on the second row if not ranks how close or garbage
 	 */
-	function integer canIWinSecondRow(input tinaPoodInCarpentersBed);
+	task canIWinSecondRow();
 
 		begin
 			integer counter =0;
 			integer oppCounter = 0;
 
-			if (takenByX(board[3]))begin
+			if (board[3] == `X)begin
 				//ok I got the top right corner
 				counter = counter + 1;
-			end else if (takenByO(board[3]))begin
+			end else if (board[3] == `O)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[4]))begin
+			if(board[4] ==`X)begin
 				//k i got the middle
 				counter = counter + 1;
-			end else if (takenByO(board[4]))begin
+			end else if (board[4] == `O)begin
 				//he got middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[5]))begin
+			if(board[5] == `X)begin
 				//ok i got bottom left
 				counter = counter + 1;
-			end else if (takenByO(board[5]))begin
+			end else if (board[5] == `O)begin
 				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
@@ -585,37 +619,37 @@ module simulation(integer userInput);
 				canIWinSecondRow = counter; //will return how close I am to winning diagonally left
 			end
 		end
-	endfunction
+	endtask
 
 	/**
 	 * Method that checks if the computer can win horizontally on the third row if not ranks how close or garbage
 	 */
-	function integer canIWinThirdRow(input alexPoodInCarpentersBedbutmostlytina); //ew tina gross
+	task canIWinThirdRow(); //ew tina gross
 
 		begin
 			integer counter =0;
 			integer oppCounter = 0;
 
-			if (takenByX(board[6]))begin
+			if (board[6]==`X)begin
 				//ok I got the top right corner
 				counter = counter + 1;
-			end else if (takenByO(board[6]))begin
+			end else if (board[6]==`O)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[7]))begin
+			if(board[7]==`X)begin
 				//k i got the middle
 				counter = counter + 1;
-			end else if (takenByO(board[7]))begin
+			end else if (board[7]==`O)begin
 				//he got middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[8]))begin
+			if(board[8] ==`X)begin
 				//ok i got bottom left
 				counter = counter + 1;
-			end else if (takenByO(board[8]))begin
+			end else if (board[8] == `O)begin
 				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
@@ -632,38 +666,38 @@ module simulation(integer userInput);
 				canIWinThirdRow = counter; //will return how close I am to winning diagonally left
 			end
 		end
-	endfunction
+	endtask
 
 
 	/**
 	 * Method that checks if the computer can win vertically on the first column if not ranks how close or garbage
 	 */
-	function integer canIWinFirstColumn(input aaronCarpenterHaveMyBabies);
+	task canIWinFirstColumn();
 
 		begin
 			integer counter =0;
 			integer oppCounter = 0;
 
-			if (takenByX(board[0]))begin
+			if (board[0]==`X)begin
 				//ok I got the top left corner
 				counter = counter + 1;
-			end else if (takenByO(board[0]))begin
+			end else if (board[0]==`O)begin
 				//he got top left
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[3]))begin
+			if(board[3]==`X)begin
 				//k i got the middle left
 				counter = counter + 1;
-			end else if (takenByO(board[3]))begin
+			end else if (board[3]==`O)begin
 				//he got middle left
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[6]))begin
+			if(board[6]==`X)begin
 				//ok i got bottom left
 				counter = counter + 1;
-			end else if (takenByO(board[6]))begin
+			end else if (board[6]==`O)begin
 				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
@@ -680,38 +714,38 @@ module simulation(integer userInput);
 				canIWinFirstColumn = counter; //will return how close I am to winning diagonally left
 			end
 		end
-	endfunction
+	endtask
 
 
 	/**
 	 * Method that checks if the computer can win vertically on the second column if not ranks how close or garbage
 	 */
-	function integer canIWinSecondColumn(input aaronCarpenterIsTheSunshineOfMyLife);
+	task canIWinSecondColumn();
 
 		begin
 			integer counter =0;
 			integer oppCounter = 0;
 
-			if (takenByX(board[1]))begin
+			if (board[1]==`X)begin
 				//ok I got the top middle
 				counter = counter + 1;
-			end else if (takenByO(board[1]))begin
+			end else if (board[1]==`O)begin
 				//he got top middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[4]))begin
+			if(board[4]==`X)begin
 				//k i got the center
 				counter = counter + 1;
-			end else if (takenByO(board[4]))begin
+			end else if (board[4]==`O)begin
 				//he got center
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[7]))begin
+			if(board[7]==`X)begin
 				//ok i got bottom middle
 				counter = counter + 1;
-			end else if (takenByO(board[7]))begin
+			end else if (board[7]==`O)begin
 				//he got bottom middle
 				oppCounter = oppCounter + 1;
 			end
@@ -728,37 +762,37 @@ module simulation(integer userInput);
 				canIWinSecondColumn = counter; //will return how close I am to winning diagonally left
 			end
 		end
-	endfunction
+	endtask
 
 	/**
 	 * Method that checks if the computer can win vertically on the third column if not ranks how close or garbage
 	 */
-	function integer canIWinThirdColumn(input aaronCarpenterIsTheGuyWhoPaysForWinrar;
+	task canIWinThirdColumn();
 
 		begin
 			integer counter =0;
 			integer oppCounter = 0;
 
-			if (takenByX(board[2]))begin
+			if (board[2]==`X)begin
 				//ok I got the top right
 				counter = counter + 1;
-			end else if (takenByO(board[2]))begin
+			end else if (board[2]==`O)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[5]))begin
+			if(board[5]==`X)begin
 				//k i got the center
 				counter = counter + 1;
-			end else if (takenByO(board[5]))begin
+			end else if (board[5]==`O)begin
 				//he got center
 				oppCounter = oppCounter + 1;
 			end
 
-			if(takenByX(board[7]))begin
+			if(board[7]==`X)begin
 				//ok i got bottom middle
 				counter = counter + 1;
-			end else if (takenByO(board[7]))begin
+			end else if (board[7]==`O)begin
 				//he got bottom middle
 				oppCounter = oppCounter + 1;
 			end
@@ -780,9 +814,10 @@ module simulation(integer userInput);
 
 	endfunction
 
-	/**
+	/*
+/**
 	  * Returns a 1 if its taken by an X, 0 otherwise
-	  */
+
 	function real takenByX(integer specificSpot);
 		begin
 			if (specificSpot == `X)begin
@@ -791,11 +826,11 @@ module simulation(integer userInput);
 				takenByX = 0;
 			end
 		end
-	endfunction
+	endtask
 
 	/**
 	  * Returns a 1 if its taken by an O, 0 otherwise
-	  */
+
 	function real takenByO(integer specificSpot);
 		begin
 			if (specificSpot == 'O) begin
@@ -809,13 +844,36 @@ module simulation(integer userInput);
 	/**
 	  * Returns a 1 if its empty, 0 otherwise
 	  */
-	function real isEmpty(integer specificSpot);
+	task isEmpty();
 		begin
-			if (specificSpot == `EMPTY) begin
-				isEmpty = 1;
-			end else begin
-				isEmpty = 0;
+			if (board[0] == `EMPTY) begin
+			isEmpty0 = 1;
 			end
+			if (board[1] == `EMPTY) begin
+			isEmpty1 = 1;
+			end
+			if (board[2] == `EMPTY) begin
+			isEmpty2 = 2;
+			end
+			if (board[3] == `EMPTY) begin
+			isEmpty3 = 1;
+			end
+			if (board[4] == `EMPTY) begin
+			isEmpty4 = 1;
+			end
+			if (board[5] == `EMPTY) begin
+			isEmpty5 = 1;
+			end
+			if (board[6] == `EMPTY) begin
+			isEmpty6 = 1;
+			end
+			if (board[7] == `EMPTY) begin
+			isEmpty7 = 1;
+			end
+			if (board[8] == `EMPTY) begin
+			isEmpty8 = 1;
+			end
+
 		end
 	endfunction
 
