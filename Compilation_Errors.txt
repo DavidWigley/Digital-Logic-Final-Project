@@ -2,313 +2,163 @@ vlog -work work -stats=none C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v
 Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
 -- Compiling module test
 -- Compiling module simulation
-** Error: (vlog-13027) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(96): near "box": Syntax error. 'for' loop variable declaration only allowed in SystemVerilog.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(114): BEGIN - END required around task/function statements
+** Error: (vlog-13069) ** while parsing macro expansion: 'EXIT_CODE' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(122)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(122): near "=": syntax error, unexpected '='.
 
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(96): (vlog-2730) Undefined variable: 'box'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'LDIAG' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(151)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(151): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13036) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(96): near "++": Operator only allowed in SystemVerilog.
+** Error: (vlog-13069) ** while parsing macro expansion: 'RDIAG' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(157)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(157): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(96): near ")": syntax error, unexpected ')', expecting ';'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'VERT1' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(162)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(162): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(109): near "'E": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) ** while parsing macro expansion: 'VERT2' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(167)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(167): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(109): near "IT_CODE": syntax error, unexpected IDENTIFIER.
+** Error: (vlog-13069) ** while parsing macro expansion: 'VERT3' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(172)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(172): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(109): near "'E": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) ** while parsing macro expansion: 'HORIZ1' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(177)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(177): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(110): near "'E": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) ** while parsing macro expansion: 'HORIZ2' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(182)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(182): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(110): near "'E": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) ** while parsing macro expansion: 'HORIZ3' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(187)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(187): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(111): near "'E": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(192): near "endtask": syntax error, unexpected endtask, expecting endfunction.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(111): near "'E": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) ** while parsing macro expansion: 'LDIAG' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(199)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(199): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(111): near "'E": Illegal base specifier in numeric constant.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(312): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(312): Declarations not allowed in unnamed block.
+** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(352): near "endtask": syntax error, unexpected endtask, expecting endfunction.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(138): near "'L": Illegal base specifier in numeric constant.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(359): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(359): Declarations not allowed in unnamed block.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(408): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(408): Declarations not allowed in unnamed block.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(409): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(409): Declarations not allowed in unnamed block.
+** Error: (vlog-13069) ** while parsing macro expansion: 'EXIT_CODE' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(436)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(436): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(138): near "IAG": syntax error, unexpected IDENTIFIER, expecting ';'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(438)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(438): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(144): near "'R": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) ** while parsing macro expansion: 'FORTHEWIN' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(440)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(440): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(144): near "IAG": syntax error, unexpected IDENTIFIER, expecting ';'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(442)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(442): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(149): near "'V": Illegal base specifier in numeric constant.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(455): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(455): Declarations not allowed in unnamed block.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(456): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(456): Declarations not allowed in unnamed block.
+** Error: (vlog-13069) ** while parsing macro expansion: 'EXIT_CODE' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(483)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(483): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(149): near "RT1": syntax error, unexpected IDENTIFIER, expecting ';'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(485)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(485): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(154): near "'V": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) ** while parsing macro expansion: 'FORTHEWIN' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(487)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(487): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(154): near "RT2": syntax error, unexpected IDENTIFIER, expecting ';'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(489)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(489): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(159): near "'V": Illegal base specifier in numeric constant.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(502): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(502): Declarations not allowed in unnamed block.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(503): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(503): Declarations not allowed in unnamed block.
+** Error: (vlog-13069) ** while parsing macro expansion: 'EXIT_CODE' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(530)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(530): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(159): near "RT3": syntax error, unexpected IDENTIFIER, expecting ';'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(532)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(532): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(164): Expecting numeric digits.
+** Error: (vlog-13069) ** while parsing macro expansion: 'FORTHEWIN' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(534)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(534): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(164): near "ORIZ1": syntax error, unexpected IDENTIFIER, expecting ';'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(536)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(536): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(169): Expecting numeric digits.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(549): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(549): Declarations not allowed in unnamed block.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(550): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(550): Declarations not allowed in unnamed block.
+** Error: (vlog-13069) ** while parsing macro expansion: 'EXIT_CODE' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(577)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(577): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(169): near "ORIZ2": syntax error, unexpected IDENTIFIER, expecting ';'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(579)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(579): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(174): near "myPriority": syntax error, unexpected IDENTIFIER, expecting ';'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'FORTHEWIN' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(581)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(581): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(174): Expecting numeric digits.
+** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(583)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(583): near "=": syntax error, unexpected '='.
 
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(179): BEGIN - END required around task/function statements
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(186): near "'L": Illegal base specifier in numeric constant.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(596): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(596): Declarations not allowed in unnamed block.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(597): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(597): Declarations not allowed in unnamed block.
+** Error: (vlog-13069) ** while parsing macro expansion: 'EXIT_CODE' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(624)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(624): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(186): near "IAG": syntax error, unexpected IDENTIFIER.
+** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(626)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(626): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(199): near "'R": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) ** while parsing macro expansion: 'FORTHEWIN' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(628)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(628): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(215): near "'V": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(630)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(630): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(227): near "'V": Illegal base specifier in numeric constant.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(644): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(644): Declarations not allowed in unnamed block.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(645): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(645): Declarations not allowed in unnamed block.
+** Error: (vlog-13069) ** while parsing macro expansion: 'EXIT_CODE' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(672)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(672): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(239): near "'V": Illegal base specifier in numeric constant.
+** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(674)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(674): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(251): Expecting numeric digits.
+** Error: (vlog-13069) ** while parsing macro expansion: 'FORTHEWIN' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(676)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(676): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(263): Expecting numeric digits.
+** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(678)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(678): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(275): Expecting numeric digits.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(692): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(692): Declarations not allowed in unnamed block.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(693): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
+** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(693): Declarations not allowed in unnamed block.
+** Error: (vlog-13069) ** while parsing macro expansion: 'EXIT_CODE' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(720)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(720): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13027) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(300): near "box": Syntax error. 'for' loop variable declaration only allowed in SystemVerilog.
+** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(722)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(722): near "=": syntax error, unexpected '='.
 
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(300): (vlog-2730) Undefined variable: 'box'.
+** Error: (vlog-13069) ** while parsing macro expansion: 'FORTHEWIN' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(724)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(724): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13036) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(300): near "++": Operator only allowed in SystemVerilog.
+** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(726)
+** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(726): near "=": syntax error, unexpected '='.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(300): near ")": syntax error, unexpected ')', expecting ';'.
+** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(736): near ";": syntax error, unexpected ';', expecting ')'.
 
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(314): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(314): Declarations not allowed in unnamed block.
-** Error: (vlog-13027) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(316): near "box": Syntax error. 'for' loop variable declaration only allowed in SystemVerilog.
+** Error: (vlog-13026) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(786): near "specificSpot": syntax error, 'input', 'output' or 'inout' expected.
 
-** Error: (vlog-13036) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(316): near "++": Operator only allowed in SystemVerilog.
+** Error: (vlog-13026) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(799): near "specificSpot": syntax error, 'input', 'output' or 'inout' expected.
 
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(316): near ")": syntax error, unexpected ')', expecting ';'.
+** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(801): Expecting numeric digits.
 
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(333): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(333): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(334): Variable declaration assignments are only allowed at the module level or if the variables are automatic.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(334): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(361): (vlog-2730) Undefined variable: 'canIWinDiagonallyLeft'.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(361): near "'E": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(361): near "IT_CODE": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(363)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(363): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(365): near "'F": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(365): Expecting numeric digits.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(365): near "ORTHEWIN": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(367)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(367): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(372): near "endfunction": syntax error, unexpected endfunction, expecting endtask.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(333): (vlog-2291) 'counter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(380): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(334): (vlog-2291) 'oppCounter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(381): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(408): (vlog-2730) Undefined variable: 'canIWinDiagonallyRight'.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(408): near "'E": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(408): near "IT_CODE": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(410)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(410): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(412): near "'F": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(412): Expecting numeric digits.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(412): near "ORTHEWIN": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(414)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(414): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(419): near "endfunction": syntax error, unexpected endfunction, expecting endtask.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(333): (vlog-2291) 'counter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(427): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(334): (vlog-2291) 'oppCounter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(428): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(455): (vlog-2730) Undefined variable: 'canIWinFirstRow'.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(455): near "'E": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(455): near "IT_CODE": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(457)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(457): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(459): near "'F": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(459): Expecting numeric digits.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(459): near "ORTHEWIN": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(461)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(461): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(466): near "endfunction": syntax error, unexpected endfunction, expecting endtask.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(333): (vlog-2291) 'counter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(474): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(334): (vlog-2291) 'oppCounter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(475): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(502): (vlog-2730) Undefined variable: 'canIWinSecondRow'.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(502): near "'E": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(502): near "IT_CODE": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(504)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(504): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(506): near "'F": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(506): Expecting numeric digits.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(506): near "ORTHEWIN": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(508)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(508): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(513): near "endfunction": syntax error, unexpected endfunction, expecting endtask.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(333): (vlog-2291) 'counter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(521): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(334): (vlog-2291) 'oppCounter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(522): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(549): (vlog-2730) Undefined variable: 'canIWinThirdRow'.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(549): near "'E": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(549): near "IT_CODE": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(551)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(551): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(553): near "'F": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(553): Expecting numeric digits.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(553): near "ORTHEWIN": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(555)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(555): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(560): near "endfunction": syntax error, unexpected endfunction, expecting endtask.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(333): (vlog-2291) 'counter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(569): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(334): (vlog-2291) 'oppCounter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(570): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(597): (vlog-2730) Undefined variable: 'canIWinFirstColumn'.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(597): near "'E": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(597): near "IT_CODE": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(599)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(599): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(601): near "'F": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(601): Expecting numeric digits.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(601): near "ORTHEWIN": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(603)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(603): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(608): near "endfunction": syntax error, unexpected endfunction, expecting endtask.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(333): (vlog-2291) 'counter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(617): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(334): (vlog-2291) 'oppCounter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(618): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(645): (vlog-2730) Undefined variable: 'canIWinSecondColumn'.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(645): near "'E": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(645): near "IT_CODE": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(647)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(647): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(649): near "'F": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(649): Expecting numeric digits.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(649): near "ORTHEWIN": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(651)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(651): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(656): near "endfunction": syntax error, unexpected endfunction, expecting endtask.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(333): (vlog-2291) 'counter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(664): Declarations not allowed in unnamed block.
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(334): (vlog-2291) 'oppCounter' already declared in this scope ('insertX').
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(665): Declarations not allowed in unnamed block.
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(692): near "'E": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(692): near "IT_CODE": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'CONTESTED' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(694)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(694): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13053) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(696): near "'F": Illegal base specifier in numeric constant.
-
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(696): Expecting numeric digits.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(696): near "ORTHEWIN": syntax error, unexpected IDENTIFIER, expecting ';'.
-
-** Error: (vlog-13069) ** while parsing macro expansion: 'BLOCK' starting at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(698)
-** at C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(698): near "=": syntax error, unexpected '='.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(704): near "end": syntax error, unexpected end.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(713): (vlog-2730) Undefined variable: 'specificSpot'.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(714): (vlog-2730) Undefined variable: 'takenByX'.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(719): near "endfunction": syntax error, unexpected endfunction, expecting endtask.
-
-** Error: (vlog-13057) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(726): Expecting numeric digits.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(727): (vlog-2730) Undefined variable: 'takenByO'.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(732): near "endfunction": syntax error, unexpected endfunction, expecting endtask.
-
-** Error: C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(740): (vlog-2730) Undefined variable: 'isEmpty'.
-
-** Error: (vlog-13069) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(745): near "endfunction": syntax error, unexpected endfunction, expecting endtask.
+** Error: (vlog-13026) C:/Modeltech_pe_edu_10.4a/examples/tictac/Main.v(812): near "specificSpot": syntax error, 'input', 'output' or 'inout' expected.
