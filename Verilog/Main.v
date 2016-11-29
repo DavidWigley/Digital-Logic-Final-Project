@@ -55,15 +55,15 @@ module simulation(input integer userInput,input reg sendSignal);
 	integer canIWinDiagonallyLeftVal;
 	integer canIWinDiagonallyRightVal;
 
-	reg isEmpty0 =0;
-	reg isEmpty1 =0;
-	reg isEmpty2 =0;
-	reg isEmpty3 =0;
-	reg isEmpty4 =0;
-	reg isEmpty5 =0;
-	reg isEmpty6 =0;
-	reg isEmpty7 =0;
-	reg isEmpty8 =0;
+	reg isEmpty0 =1;
+	reg isEmpty1 =1;
+	reg isEmpty2 =1;
+	reg isEmpty3 =1;
+	reg isEmpty4 =1;
+	reg isEmpty5 =1;
+	reg isEmpty6 =1;
+	reg isEmpty7 =1;
+	reg isEmpty8 =1;
 
 
 	wire [7:0]result;
@@ -110,12 +110,14 @@ module simulation(input integer userInput,input reg sendSignal);
 	if (errorMessage != -1) begin //if the users input is valid
 		myPriority = -1; //resetting these variables from the last simulation
 		currentMatches = -1; //resetting these variables from the last simulation
+		isEmpty();
 		determinePriority(); // determine the new priority based on the board
 		if (myPriority == -1) begin //if every priority returns garbage
 			redundancy(); //insert an x into the first open spot found
 		end
 		else begin
 		insertX(); //now actually insert an x that is logical
+		$display("X inserted, MyPriority was: ",myPriority);
 		end
 		#2 // I want the user to see if someone won
 		checkIfFinished();
@@ -177,6 +179,8 @@ module simulation(input integer userInput,input reg sendSignal);
 	 */
 	task determinePriority();
 		begin
+
+
 			canIWinFirstRow();
 			canIWinSecondRow();
 			canIWinThirdRow();
@@ -522,7 +526,7 @@ module simulation(input integer userInput,input reg sendSignal);
 			if (board[2] == 2)begin
 				//ok I got the top right corner
 				counter = counter + 1;
-			end else if (board[2]==`O)begin
+			end else if (board[2]==1)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
@@ -530,7 +534,7 @@ module simulation(input integer userInput,input reg sendSignal);
 			if(board[4]== 2)begin
 				//k i got the middle
 				counter = counter + 1;
-			end else if (board[4]==`O)begin
+			end else if (board[4]==1)begin
 				//he got middle
 				oppCounter = oppCounter + 1;
 			end
@@ -538,7 +542,7 @@ module simulation(input integer userInput,input reg sendSignal);
 			if(board[6] == 2)begin
 				//ok i got bottom left
 				counter = counter + 1;
-			end else if (board[6] ==`O)begin
+			end else if (board[6] ==1)begin
 				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
@@ -660,23 +664,23 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[6]==`X)begin
+			if (board[6]==2)begin
 				//ok I got the top right corner
 				counter = counter + 1;
-			end else if (board[6]==`O)begin
+			end else if (board[6]==1)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[7]==`X)begin
+			if(board[7]==2)begin
 				//k i got the middle
 				counter = counter + 1;
-			end else if (board[7]==`O)begin
+			end else if (board[7]==1)begin
 				//he got middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[8] ==`X)begin
+			if(board[8] ==2)begin
 				//ok i got bottom left
 				counter = counter + 1;
 			end else if (board[8] == 1)begin
@@ -708,26 +712,26 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[0]==`X)begin
+			if (board[0]==2)begin
 				//ok I got the top left corner
 				counter = counter + 1;
-			end else if (board[0]==`O)begin
+			end else if (board[0]==1)begin
 				//he got top left
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[3]==`X)begin
+			if(board[3]==2)begin
 				//k i got the middle left
 				counter = counter + 1;
-			end else if (board[3]==`O)begin
+			end else if (board[3]==1)begin
 				//he got middle left
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[6]==`X)begin
+			if(board[6]==2)begin
 				//ok i got bottom left
 				counter = counter + 1;
-			end else if (board[6]==`O)begin
+			end else if (board[6]==1)begin
 				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
@@ -756,26 +760,26 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[1]==`X)begin
+			if (board[1]==2)begin
 				//ok I got the top middle
 				counter = counter + 1;
-			end else if (board[1]==`O)begin
+			end else if (board[1]==1)begin
 				//he got top middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[4]==`X)begin
+			if(board[4]==2)begin
 				//k i got the center
 				counter = counter + 1;
-			end else if (board[4]==`O)begin
+			end else if (board[4]==1)begin
 				//he got center
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[7]==`X)begin
+			if(board[7]==2)begin
 				//ok i got bottom middle
 				counter = counter + 1;
-			end else if (board[7]==`O)begin
+			end else if (board[7]==1)begin
 				//he got bottom middle
 				oppCounter = oppCounter + 1;
 			end
@@ -803,32 +807,32 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[2]==`X)begin
+			if (board[2]==2)begin
 				//ok I got the top right
 				counter = counter + 1;
 			end
 
-			else if (board[2]==`O)begin
+			else if (board[2]==1)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[5]==`X)begin
+			if(board[5]==2)begin
 				//k i got the center
 				counter = counter + 1;
 			end
 
-			else if (board[5]==`O)begin
+			else if (board[5]==1)begin
 				//he got center
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[7]==`X)begin
+			if(board[7]==2)begin
 				//ok i got bottom middle
 				counter = counter + 1;
 			end
 
-			else if (board[7]==`O)begin
+			else if (board[7]==1)begin
 				//he got bottom middle
 				oppCounter = oppCounter + 1;
 			end
