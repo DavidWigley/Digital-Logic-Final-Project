@@ -27,16 +27,18 @@ simulation mySimulation(userInput,sendSignal);
 
 initial begin
 
-	$monitor("| ", mySimulation.board[0], " | ",mySimulation.board[1]," | ",mySimulation.board[2],"\n ____________ "," \n | ",mySimulation.board[3], " | ",mySimulation.board[4]," | ",mySimulation.board[5],"\n ____________ ","\n | ",mySimulation.board[6], " | ",mySimulation.board[7]," | ",mySimulation.board[8], "\n"); //hopefully this looks somewhat right and technically this should update when these values update;
+	$monitor(mySimulation.board[0], " ",mySimulation.board[1]," ",mySimulation.board[2],"\n",mySimulation.board[3], " ",mySimulation.board[4]," ",mySimulation.board[5],"\n",mySimulation.board[6], " ",mySimulation.board[7]," ",mySimulation.board[8], "\n\n\n\n"); //hopefully this looks somewhat right and technically this should update when these values update;
 	#2 userInput = 5;
 	   sendSignal = 1;
-	#1 sendSignal = 0;
+	#5 sendSignal = 0;
 	#5 userInput = 8;
 	   sendSignal = 1;
-	#1 sendSignal = 0;
+	#5 sendSignal = 0;
 	#5 userInput = 3;
 	   sendSignal = 1;
-	#1 sendSignal = 0;
+	#5 sendSignal = 0;
+	#5  userInput = 0;
+	   sendSignal = 1;
 
 end
 
@@ -88,7 +90,7 @@ module simulation(input integer userInput,input reg sendSignal);
 
 
 	initial begin
-	initBoard(); // initialize the board (this should onley happen once)	
+	initBoard(); // initialize the board (this should onley happen once)
 	end
 
 
@@ -115,7 +117,7 @@ module simulation(input integer userInput,input reg sendSignal);
 		else begin
 		insertX(); //now actually insert an x that is logical
 		end
-		#2; // I want the user to see if someone won
+		#2 // I want the user to see if someone won
 		checkIfFinished();
 	end
 	errorMessage = 0; //reset error message to 0 for the next input
@@ -164,7 +166,7 @@ module simulation(input integer userInput,input reg sendSignal);
 					$finish; // believe this is how you exit in verilog. Could always just stand behind carpenter when he plays then when he wins
 					//or the board is full throw a hammar at his screen
 				end
-			
+
 			else begin
 				checkIfFinishedVal = 0; //nobody has won yet
 			end
@@ -242,8 +244,8 @@ module simulation(input integer userInput,input reg sendSignal);
 				if (isEmpty4 == 1) begin
 					//middle is always priority
 					board[4]=2;
-				end 
-				
+				end
+
 				else if (isEmpty0 == 1) begin
 					//I already had middle take top left
 					board[0]=2;
@@ -324,7 +326,7 @@ module simulation(input integer userInput,input reg sendSignal);
 				if (isEmpty0 == 1) begin
 					//top left
 					board[0] = 2;
-				end 
+				end
 
 				else if (isEmpty1 ==1) begin
 					//top middle
@@ -380,7 +382,7 @@ module simulation(input integer userInput,input reg sendSignal);
 	*/
 	task redundancy();
 		begin
-		
+
 
 		if (board[0] == 0 && used ==0)begin
 			board[0] = 2;
@@ -652,7 +654,7 @@ module simulation(input integer userInput,input reg sendSignal);
 	/**
 	 * Method that checks if the computer can win horizontally on the third row if not ranks how close or garbage
 	 */
-	task canIWinThirdRow(); 
+	task canIWinThirdRow();
 
 		begin
 			counter =0;
