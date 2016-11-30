@@ -27,7 +27,7 @@ simulation mySimulation(userInput,sendSignal);
 
 initial begin
 
-	$monitor(mySimulation.board[0], " ",mySimulation.board[1]," ",mySimulation.board[2],"\n",mySimulation.board[3], " ",mySimulation.board[4]," ",mySimulation.board[5],"\n",mySimulation.board[6], " ",mySimulation.board[7]," ",mySimulation.board[8], "\n\n\n\n"); //hopefully this looks somewhat right and technically this should update when these values update;
+
 	#2 userInput = 5;
 	   sendSignal = 1;
 	#5 sendSignal = 0;
@@ -91,6 +91,9 @@ module simulation(input integer userInput,input reg sendSignal);
 
 	initial begin
 	initBoard(); // initialize the board (this should onley happen once)
+	$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8], "\n\n\n\n"); //hopefully this looks somewhat right and technically this should update when these values update;
+
+
 	end
 
 
@@ -110,14 +113,17 @@ module simulation(input integer userInput,input reg sendSignal);
 	if (errorMessage != -1) begin //if the users input is valid
 		myPriority = -1; //resetting these variables from the last simulation
 		currentMatches = -1; //resetting these variables from the last simulation
+
 		isEmpty();
 		determinePriority(); // determine the new priority based on the board
+
 		if (myPriority == -1) begin //if every priority returns garbage
 			redundancy(); //insert an x into the first open spot found
 		end
 		else begin
-		insertX(); //now actually insert an x that is logical
-		$display("X inserted, MyPriority was: ",myPriority);
+		 insertX(); //now actually insert an x that is logical
+		$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8]); //hopefully this looks somewhat right and technically this should update when these values update;
+		$display("X inserted, MyPriority was: ",myPriority, "\n\n\n\n");
 		end
 		#2 // I want the user to see if someone won
 		checkIfFinished();
@@ -179,7 +185,16 @@ module simulation(input integer userInput,input reg sendSignal);
 	 */
 	task determinePriority();
 		begin
-
+			currentMatches = -1;
+			myPriority = -1; //rezero these
+			canIWinFirstRowVal =0;
+			canIWinSecondRowVal=0;
+			canIWinThirdRowVal=0;
+	 		canIWinFirstColumnVal=0;
+	 		canIWinSecondColumnVal=0;
+	 		canIWinThirdColumnVal=0;
+			canIWinDiagonallyLeftVal=0;
+			canIWinDiagonallyRightVal=0;
 
 			canIWinFirstRow();
 			canIWinSecondRow();
@@ -189,10 +204,10 @@ module simulation(input integer userInput,input reg sendSignal);
 			canIWinThirdColumn();
 			canIWinDiagonallyLeft();
 			canIWinDiagonallyRight();
+
 			//So basically this logic will look to see if I can win immediately or stop him
 			//from winning immediately. If I cant then I'll choose the next best possible option prioritizing the diags
-			currentMatches = -1;
-			myPriority = -1; //rezero these
+
 
 			//These must be if's and not else ifs because they all need to check. Else if would break after 1.
 			//If these things run in parallel and I get threading problems I'm going to be upset
@@ -248,16 +263,19 @@ module simulation(input integer userInput,input reg sendSignal);
 				if (isEmpty4 == 1) begin
 					//middle is always priority
 					board[4]=2;
+					$display("Box was: 4");
 				end
 
 				else if (isEmpty0 == 1) begin
 					//I already had middle take top left
 					board[0]=2;
+					$display("Box was: 0");
 				end
 
 				else begin
 					//I already had top left and middle take bottom right. Could add redundancy
 					board[8]=2;
+					$display("Box was: 8");
 				end
 			end
 			else if(myPriority==2) begin
@@ -265,16 +283,20 @@ module simulation(input integer userInput,input reg sendSignal);
 				if (isEmpty4==1) begin
 					//middle is always priority
 					board[4]=2;
+					$display("Box was: 4");
+					$display(isEmpty4);
 				end
 
 				else if (isEmpty6==1) begin
 					//I already had middle take bottom left
 					board[6] =2;
+					$display("Box was: 6");
 				end
 
 				else begin
 					//I already had bottom left and middle take top right. Could add redundancy
 					board[2]=2;
+					$display("Box was: 2");
 				end
 			end
 			//Verilog is the kid who just licks the walls in elementary school
@@ -282,96 +304,114 @@ module simulation(input integer userInput,input reg sendSignal);
 				if (isEmpty0==1) begin
 					//top left
 					board[0] = 2;
+					$display("Box was: 0");
 				end
 
 				else if (isEmpty3==1) begin
 					//middle left
 					board[3] = 2;
+					$display("Box was: 3");
 				end
 
 				 else if (isEmpty6==1) begin
 					//bottom left
 					board[6] = 2;
+					$display("Box was: 6");
 				end
 			end
 			else if (myPriority == 7) begin
 				if (isEmpty1 ==1) begin
 					//top middle
 					board[1] = 2;
+					$display("Box was: 1");
 				end
 
 				else if (isEmpty4 ==1) begin
 					//middle middle
 					board[4] = 2;
+					$display("Box was: 4");
 				end
 
 				else if (isEmpty7==1) begin
 					//bottom middle
 					board[7] = 2;
+					$display("Box was: 7");
 				end
 			end
 			else if (myPriority == 8) begin
 				if (isEmpty2 ==1) begin
 					//top right
 					board[2] = 2;
+					$display("Box was: 2");
 				end
 
 				else if (isEmpty5 ==1) begin
 					//middle right
 					board[5] = 2;
+					$display("Box was: 5");
 				end
 
 				else if (isEmpty8 ==1) begin
 					//bottom right
 					board[8] = 2;
+					$display("Box was: 8");
 				end
 			end
 			else if (myPriority == 3) begin
 				if (isEmpty0 == 1) begin
 					//top left
 					board[0] = 2;
+					$display("Box was: 0");
 				end
 
 				else if (isEmpty1 ==1) begin
 					//top middle
 					board[1] = 2;
+					$display("Box was: 1");
 				end
 
 				else if (isEmpty2 ==1) begin
 					//bottom middle
 					board[2] = 2;
+					$display("Box was: 2");
 				end
 			end
 			else if (myPriority == 4) begin
 				if (isEmpty3 ==1) begin
 					//middle left
 					board[3] = 2;
+					$display("Box was: 3");
 				end
 
 				else if (isEmpty4 ==1) begin
 					//middle middle
 					board[4] = 2;
+					$display("Box was: 4");
 				end
 
 				else if (isEmpty5 ==1) begin
 					//middle right
 					board[5] = 2;
+					$display("Box was: 5");
 				end
 			end
 			else if (myPriority == 5) begin
 				if (isEmpty6 ==1) begin
 					//bottom left
 					board[6] = 2;
+					$display("Box was: 6");
 				end
 
 				else if (isEmpty7 ==1) begin
 					//bottom middle
 					board[7] = 2;
+					$display("Box was: 7");
 				end
 
 				else if (isEmpty8 == 1) begin
 					//bottom right
 					board[8] = 2;
+					$display("Box was: 8");
 				end
 			end
 		end
@@ -894,32 +934,33 @@ module simulation(input integer userInput,input reg sendSignal);
 	  */
 	task isEmpty();
 		begin
-			if (board[0] == 0) begin
-				isEmpty0 = 1;
+			if (board[0] != 0) begin
+				isEmpty0 = 0;
 			end
-			if (board[1] == 0) begin
-				isEmpty1 = 1;
+			if (board[1] != 0) begin
+				isEmpty1 = 0;
 			end
-			if (board[2] == 0) begin
-				isEmpty2 = 1;
+			if (board[2] != 0) begin
+				isEmpty2 = 0;
 			end
-			if (board[3] == 0) begin
-				isEmpty3 = 1;
+			if (board[3] != 0) begin
+				isEmpty3 = 0;
 			end
-			if (board[4] == 0) begin
-				isEmpty4 = 1;
+			if (board[4] != 0) begin
+				isEmpty4 = 0;
+				$display("4 is filled now");
 			end
-			if (board[5] == 0) begin
-				isEmpty5 = 1;
+			if (board[5] != 0) begin
+				isEmpty5 = 0;
 			end
-			if (board[6] == 0) begin
-				isEmpty6 = 1;
+			if (board[6] != 0) begin
+				isEmpty6 = 0;
 			end
-			if (board[7] == 0) begin
-				isEmpty7 = 1;
+			if (board[7] != 0) begin
+				isEmpty7 = 0;
 			end
-			if (board[8] == 0) begin
-				isEmpty8 = 1;
+			if (board[8] != 0) begin
+				isEmpty8 = 0;
 			end
 
 		end
