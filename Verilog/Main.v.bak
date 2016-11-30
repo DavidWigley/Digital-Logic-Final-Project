@@ -27,8 +27,21 @@ simulation mySimulation(userInput,sendSignal);
 
 initial begin
 
-
+	//This test case does not work for us (we lose) we need to get our priorities straight.
 	#2 userInput = 5;
+	   sendSignal = 1;
+	#5 sendSignal = 0;
+	#5 userInput = 8;
+	   sendSignal = 1;
+	#5 sendSignal = 0;
+	#5 userInput = 2;
+	   sendSignal = 1;
+	#5 sendSignal = 0;
+	#5  userInput = 2;
+	   sendSignal = 1;
+
+/* //This test case works in our favor (we win)
+#2 userInput = 5;
 	   sendSignal = 1;
 	#5 sendSignal = 0;
 	#5 userInput = 8;
@@ -38,8 +51,7 @@ initial begin
 	   sendSignal = 1;
 	#5 sendSignal = 0;
 	#5  userInput = 0;
-	   sendSignal = 1;
-
+	   sendSignal = 1;*/
 end
 
 endmodule
@@ -104,6 +116,7 @@ module simulation(input integer userInput,input reg sendSignal);
 		else begin
 		if (board[userInput] == 0)begin //the slot the user wants to use is empty
 			board[userInput] = 1; //enter a 0 for the user
+			checkIfFinished();
 			#2; // I want the user to see the changes they have made to the board
 		end
 		else begin
