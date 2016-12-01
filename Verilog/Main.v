@@ -132,6 +132,7 @@ module simulation(input integer userInput,input reg sendSignal);
 
 		isEmpty();
 		determinePriority(); // determine the new priority based on the board
+		isBoardFull();
 		checkIfFinished();
 		if (myPriority == -1) begin //if every priority returns garbage
 			redundancy(); //insert an x into the first open spot found
@@ -141,7 +142,8 @@ module simulation(input integer userInput,input reg sendSignal);
 		$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8]); //hopefully this looks somewhat right and technically this should update when these values update;
 		$display("X inserted, MyPriority was: ",myPriority, "\n\n\n\n");
 		end
-		#2 // I want the user to see if someone won
+
+		isBoardFull();
 		checkIfFinished();
 	end
 	errorMessage = 0; //reset error message to 0 for the next input
