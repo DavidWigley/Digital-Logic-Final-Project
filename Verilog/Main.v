@@ -27,18 +27,23 @@ simulation mySimulation(userInput,sendSignal);
 
 initial begin
 
-	//This test case does not work for us (we lose) we need to get our priorities straight.
+	//Playing a full game where we tie :').
 	#2 userInput = 5;
 	   sendSignal = 1;
 	#5 sendSignal = 0;
 	#5 userInput = 8;
 	   sendSignal = 1;
 	#5 sendSignal = 0;
-	#5 userInput = 2;
+	#2 userInput = 6;
 	   sendSignal = 1;
 	#5 sendSignal = 0;
-	#5  userInput = 2;
+	#2 userInput = 1;
 	   sendSignal = 1;
+	#5 sendSignal = 0;
+	#2 userInput = 3;
+	   sendSignal = 1;
+	#5 sendSignal = 0;
+
 
 /* //This test case works in our favor (we win)
 #2 userInput = 5;
@@ -116,8 +121,6 @@ module simulation(input integer userInput,input reg sendSignal);
 		else begin
 		if (board[userInput] == 0)begin //the slot the user wants to use is empty
 			board[userInput] = 1; //enter a 0 for the user
-			checkIfFinished();
-			#2; // I want the user to see the changes they have made to the board
 		end
 		else begin
 			errorMessage = -1; //the slot wasnt empty so by setting this to -1 the computer shouldnt add another x
@@ -129,7 +132,7 @@ module simulation(input integer userInput,input reg sendSignal);
 
 		isEmpty();
 		determinePriority(); // determine the new priority based on the board
-
+		checkIfFinished();
 		if (myPriority == -1) begin //if every priority returns garbage
 			redundancy(); //insert an x into the first open spot found
 		end
@@ -180,6 +183,7 @@ module simulation(input integer userInput,input reg sendSignal);
 				begin
 					//someone won somehow or the board was filled
 					checkIfFinishedVal = 1;
+					$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8]); //hopefully this looks somewhat right and technically this should update when these values update;
 					$finish; // believe this is how you exit in verilog. Could always just stand behind carpenter when he plays then when he wins
 					//or the board is full throw a hammar at his screen
 				end
