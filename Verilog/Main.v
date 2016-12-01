@@ -163,11 +163,7 @@ module simulation(input integer userInput,input reg sendSignal);
 		board[6] = 0;
 		board[7] = 0;
 		board[8] = 0;
-			 /*//outer loop is for every single spot
-			for (integer box =0; box < 9; box++)begin
-				//inner loop is for every bit in the spot
-				board[box] = 0; //set everything to 0
-			end */
+
 	end
 	endtask
 
@@ -221,7 +217,6 @@ module simulation(input integer userInput,input reg sendSignal);
 			//So basically this logic will look to see if I can win immediately or stop him
 			//from winning immediately. If I cant then I'll choose the next best possible option prioritizing the diags
 
-
 			//These must be if's and not else ifs because they all need to check. Else if would break after 1.
 			//If these things run in parallel and I get threading problems I'm going to be upset
 			if (canIWinDiagonallyLeftVal > currentMatches) begin
@@ -271,6 +266,7 @@ module simulation(input integer userInput,input reg sendSignal);
 	 */
 	task insertX();
 		begin
+			//L DIAG
 			if (myPriority== 1) begin
 				//checks all the left diag spots to find missing and fill
 				if (isEmpty4 == 1) begin
@@ -291,6 +287,7 @@ module simulation(input integer userInput,input reg sendSignal);
 					$display("Box was: 8");
 				end
 			end
+			//R DIAG
 			else if(myPriority==2) begin
 				//checks all the right diag spots to find missing and fill
 				if (isEmpty4==1) begin
@@ -313,6 +310,7 @@ module simulation(input integer userInput,input reg sendSignal);
 				end
 			end
 			//Verilog is the kid who just licks the walls in elementary school
+			//1st row
 			else if (myPriority == 6) begin
 				if (isEmpty0==1) begin
 					//top left
@@ -320,76 +318,20 @@ module simulation(input integer userInput,input reg sendSignal);
 					$display("Box was: 0");
 				end
 
-				else if (isEmpty3==1) begin
-					//middle left
-					board[3] = 2;
-					$display("Box was: 3");
+				else if (isEmpty1==1) begin
+					//top middle
+					board[1] = 2;
+					$display("Box was: 1");
 				end
 
-				 else if (isEmpty6==1) begin
+				 else if (isEmpty2==1) begin
 					//bottom left
-					board[6] = 2;
-					$display("Box was: 6");
+					board[2] = 2;
+					$display("Box was: 2");
 				end
 			end
+			//2nd row
 			else if (myPriority == 7) begin
-				if (isEmpty1 ==1) begin
-					//top middle
-					board[1] = 2;
-					$display("Box was: 1");
-				end
-
-				else if (isEmpty4 ==1) begin
-					//middle middle
-					board[4] = 2;
-					$display("Box was: 4");
-				end
-
-				else if (isEmpty7==1) begin
-					//bottom middle
-					board[7] = 2;
-					$display("Box was: 7");
-				end
-			end
-			else if (myPriority == 8) begin
-				if (isEmpty2 ==1) begin
-					//top right
-					board[2] = 2;
-					$display("Box was: 2");
-				end
-
-				else if (isEmpty5 ==1) begin
-					//middle right
-					board[5] = 2;
-					$display("Box was: 5");
-				end
-
-				else if (isEmpty8 ==1) begin
-					//bottom right
-					board[8] = 2;
-					$display("Box was: 8");
-				end
-			end
-			else if (myPriority == 3) begin
-				if (isEmpty0 == 1) begin
-					//top left
-					board[0] = 2;
-					$display("Box was: 0");
-				end
-
-				else if (isEmpty1 ==1) begin
-					//top middle
-					board[1] = 2;
-					$display("Box was: 1");
-				end
-
-				else if (isEmpty2 ==1) begin
-					//bottom middle
-					board[2] = 2;
-					$display("Box was: 2");
-				end
-			end
-			else if (myPriority == 4) begin
 				if (isEmpty3 ==1) begin
 					//middle left
 					board[3] = 2;
@@ -402,15 +344,16 @@ module simulation(input integer userInput,input reg sendSignal);
 					$display("Box was: 4");
 				end
 
-				else if (isEmpty5 ==1) begin
-					//middle right
+				else if (isEmpty5==1) begin
+					//bottom middle
 					board[5] = 2;
 					$display("Box was: 5");
 				end
 			end
-			else if (myPriority == 5) begin
+			//third row
+			else if (myPriority == 8) begin
 				if (isEmpty6 ==1) begin
-					//bottom left
+					//bottom right
 					board[6] = 2;
 					$display("Box was: 6");
 				end
@@ -419,6 +362,66 @@ module simulation(input integer userInput,input reg sendSignal);
 					//bottom middle
 					board[7] = 2;
 					$display("Box was: 7");
+				end
+
+				else if (isEmpty8 ==1) begin
+					//bottom right
+					board[8] = 2;
+					$display("Box was: 8");
+				end
+			end
+			//first column
+			else if (myPriority == 3) begin
+				if (isEmpty0 == 1) begin
+					//top left
+					board[0] = 2;
+					$display("Box was: 0");
+				end
+
+				else if (isEmpty3 ==1) begin
+					//middle left
+					board[3] = 2;
+					$display("Box was: 3");
+				end
+
+				else if (isEmpty6 ==1) begin
+					//bottom left
+					board[6] = 2;
+					$display("Box was: 6");
+				end
+			end
+			//second column
+			else if (myPriority == 4) begin
+				if (isEmpty1 ==1) begin
+					//top middle
+					board[1] = 2;
+					$display("Box was: 1");
+				end
+
+				else if (isEmpty4 ==1) begin
+					//middle middle
+					board[4] = 2;
+					$display("Box was: 4");
+				end
+
+				else if (isEmpty7 ==1) begin
+					//middle bottom
+					board[7] = 2;
+					$display("Box was: 7");
+				end
+			end
+			//third column
+			else if (myPriority == 5) begin
+				if (isEmpty2 ==1) begin
+					//top right
+					board[2] = 2;
+					$display("Box was: 2");
+				end
+
+				else if (isEmpty5 ==1) begin
+					//middle right
+					board[5] = 2;
+					$display("Box was: 5");
 				end
 
 				else if (isEmpty8 == 1) begin
@@ -671,10 +674,10 @@ module simulation(input integer userInput,input reg sendSignal);
 			oppCounter = 0;
 
 			if (board[3] == 2)begin
-				//ok I got the top right corner
+				//ok I got the middle left
 				counter = counter + 1;
 			end else if (board[3] == 1)begin
-				//he got top right
+				//he got middle left
 				oppCounter = oppCounter + 1;
 			end
 
@@ -687,10 +690,10 @@ module simulation(input integer userInput,input reg sendSignal);
 			end
 
 			if(board[5] == 2)begin
-				//ok i got bottom left
+				//ok i got middle right
 				counter = counter + 1;
 			end else if (board[5] == 1)begin
-				//he got bottom left
+				//he got middle right
 				oppCounter = oppCounter + 1;
 			end
 
@@ -718,26 +721,26 @@ module simulation(input integer userInput,input reg sendSignal);
 			oppCounter = 0;
 
 			if (board[6]==2)begin
-				//ok I got the top right corner
+				//ok I got the bottom left corner
 				counter = counter + 1;
 			end else if (board[6]==1)begin
-				//he got top right
+				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
 
 			if(board[7]==2)begin
-				//k i got the middle
+				//k i got the bottom middle
 				counter = counter + 1;
 			end else if (board[7]==1)begin
-				//he got middle
+				//he got bottom middle
 				oppCounter = oppCounter + 1;
 			end
 
 			if(board[8] ==2)begin
-				//ok i got bottom left
+				//ok i got bottom right
 				counter = counter + 1;
 			end else if (board[8] == 1)begin
-				//he got bottom left
+				//he got bottom right
 				oppCounter = oppCounter + 1;
 			end
 
@@ -871,43 +874,43 @@ module simulation(input integer userInput,input reg sendSignal);
 			end
 
 			if(board[5]==2)begin
-				//k i got the center
+				//k i got middle right
 				counter = counter + 1;
 			end
 
 			else if (board[5]==1)begin
-				//he got center
+				//he got middle right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[7]==2)begin
-				//ok i got bottom middle
+			if(board[8]==2)begin
+				//ok i got bottom right
 				counter = counter + 1;
 			end
 
-			else if (board[7]==1)begin
-				//he got bottom middle
+			else if (board[8]==1)begin
+				//he got bottom right
 				oppCounter = oppCounter + 1;
 			end
 
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinThirdRowVal = 999; //somebody has 3 in a row
+				canIWinThirdColumnVal = 999; //somebody has 3 in a row
 			end
 
 			else if (counter !=0 && oppCounter != 0) begin
-				canIWinThirdRowVal = -2; //no way to win here. He owns at least one tile and so do I
+				canIWinThirdColumnVal = -2; //no way to win here. He owns at least one tile and so do I
 			end
 
 			else if (counter == 2 && oppCounter == 0) begin
-				canIWinThirdRowVal = 666;
+				canIWinThirdColumnVal = 666;
 			end
 
 			else if (counter ==0 && oppCounter ==2) begin
-				canIWinThirdRowVal = 3; //hes about to win make this my priority
+				canIWinThirdColumnVal = 3; //hes about to win make this my priority
 			end
 
 			else begin
-				canIWinThirdRowVal = counter; //will return how close I am to winning diagonally left
+				canIWinThirdColumnVal = counter; //will return how close I am to winning diagonally left
 			end
 
 
@@ -915,32 +918,7 @@ module simulation(input integer userInput,input reg sendSignal);
 
 	endtask
 
-	/*
-/**
-	  * Returns a 1 if its taken by an X, 0 otherwise
 
-	function real takenByX(integer specificSpot);
-		begin
-			if (specificSpot == 2)begin
-				takenByX = 1;
-			end else begin
-				takenByX = 0;
-			end
-		end
-	endtask
-
-	/**
-	  * Returns a 1 if its taken by an O, 0 otherwise
-
-	function real takenByO(integer specificSpot);
-		begin
-			if (specificSpot == 'O) begin
-				takenByO = 1;
-			end else begin
-				takenByO = 0;
-			end
-		end
-	endfunction
 
 	/**
 	  * Returns a 1 if its empty, 0 otherwise
@@ -961,7 +939,7 @@ module simulation(input integer userInput,input reg sendSignal);
 			end
 			if (board[4] != 0) begin
 				isEmpty4 = 0;
-				$display("4 is filled now");
+				//$display("4 is filled now");
 			end
 			if (board[5] != 0) begin
 				isEmpty5 = 0;
@@ -1022,10 +1000,5 @@ module simulation(input integer userInput,input reg sendSignal);
 	//init the board CHECK
 	//is the board filled CHECK
 
-	/* there is a bug for case X O X
-							   - X O
-							   O X O
-	Solution is to add redundancy. If no prioritiy is assigned find an open spot
-	*/
 
 endmodule
