@@ -1,7 +1,7 @@
-`define EXIT_CODE = 999
-`define CONTESTED = -2
-`define FORTHEWIN = 666
-`define BLOCK = 3
+`define EXIT_CODE 999
+`define CONTESTED -2
+`define FORTHEWIN 666
+`define BLOCK 3
 
 //got sick of having to remember #'s
 `define EMPTY 0
@@ -10,20 +10,20 @@
 
 
 //priority naming
-`define LDIAG = 1
-`define RDIAG = 2
-`define HORIZ1 = 3
-`define HORIZ2 = 4
-`define HORIZ3 = 5
-`define VERT1 = 6
-`define VERT2 = 7
-`define VERT3 = 8
+`define LDIAG 1
+`define RDIAG 2
+`define HORIZ1 3
+`define HORIZ2 4
+`define HORIZ3 5
+`define VERT1 6
+`define VERT2 7
+`define VERT3 8
 
 module test();
 
 reg sendSignal = 0;
 integer userInput = -1;
-simulation(userInput,sendSignal);
+simulation mySimulation(userInput,sendSignal);
 
 initial begin
 
@@ -45,7 +45,7 @@ end
 
 endmodule
 
-module simulation(integer userInput,reg sendSignal);
+module simulation(input integer userInput, input reg sendSignal);
 
 	integer canIWinFirstRowVal;
 	integer canIWinSecondRowVal;
@@ -119,7 +119,7 @@ module simulation(integer userInput,reg sendSignal);
 		else begin
 		insertX(); //now actually insert an x that is logical
 		end
-		#2; // I want the user to see if someone won
+		#2 // I want the user to see if someone won
 		checkIfFinished();
 	end
 	errorMessage = 0; //reset error message to 0 for the next input
