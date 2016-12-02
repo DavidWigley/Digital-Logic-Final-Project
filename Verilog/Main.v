@@ -1,9 +1,10 @@
+//win condition states
 `define EXIT_CODE 999
 `define CONTESTED -2
 `define FORTHEWIN 666
 `define BLOCK 3
 
-//got sick of having to remember #'s
+//Tile state consts
 `define EMPTY 0
 `define O 1
 `define X 2
@@ -66,6 +67,7 @@ endmodule
 
 module simulation(input integer userInput,input reg sendSignal);
 
+	//global vars for storing each win combos state
 	integer canIWinFirstRowVal;
 	integer canIWinSecondRowVal;
 	integer canIWinThirdRowVal;
@@ -86,6 +88,7 @@ module simulation(input integer userInput,input reg sendSignal);
 	integer checkIfFinishedVal = 0;
 	integer isBoardFullVal = 0; //its full unless I say otherwise
 
+	//global var that gets reused for counting how many myself and the opponent have
 	integer counter = 0;
 	integer oppCounter = 0;
 
@@ -122,8 +125,8 @@ module simulation(input integer userInput,input reg sendSignal);
 
 			isEmpty();
 			determinePriority(); // determine the new priority based on the board
-			isBoardFull();
-			checkIfFinished();
+			isBoardFull(); //make sure the board isnt full. Doesnt call exit just sets a var
+			checkIfFinished(); //check if someone has won or the boards full. If so quit
 			if (myPriority == -1) begin //if every priority returns garbage
 				redundancy(); //insert an x into the first open spot found
 			end
@@ -133,15 +136,16 @@ module simulation(input integer userInput,input reg sendSignal);
 				$display("X inserted, MyPriority was: ",myPriority, "\n\n\n\n");
 			end
 
-			isBoardFull();
-			checkIfFinished();
+			isBoardFull(); //make sure the board isnt full. Doesnt call exit just sets a var
+			checkIfFinished(); //check if someone has won or the boards full. If so quit
 		end
 	errorMessage = 0; //reset error message to 0 for the next input
   end
 
 
 	/**
-	 * Make all the spots empty
+	 * Make all the spots empty.
+	 * Run concurrently. Each is independent
          */
 	task initBoard(); begin
 		board[0] <= `EMPTY;
@@ -158,6 +162,7 @@ module simulation(input integer userInput,input reg sendSignal);
 
 	/**
 	 * Make all the is empty variables true because all tiles are empty
+	 * Run concurrently. Each is independent
 	 */
 	task initEmpties(); begin
 		isEmptyVals[0] <= 1;
@@ -199,6 +204,7 @@ module simulation(input integer userInput,input reg sendSignal);
 	 */
 	task determinePriority();
 		begin
+			//run concurrently reset these values
 			currentMatches <= -1;
 			myPriority <= -1; //rezero these
 			canIWinFirstRowVal <= 0;
