@@ -101,8 +101,6 @@ module simulation(input integer userInput,input reg sendSignal);
 	integer oppCounter = 0;
 
 
-	integer used = 0;
-
 	//Here is what the board will look like
 	//  0    1    2
 	//  3    4    5
@@ -112,7 +110,6 @@ module simulation(input integer userInput,input reg sendSignal);
 	initial begin
 	initBoard(); // initialize the board (this should onley happen once)
 	$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8], "\n\n\n\n"); //hopefully this looks somewhat right and technically this should update when these values update;
-
 
 	end
 
@@ -446,42 +443,40 @@ module simulation(input integer userInput,input reg sendSignal);
 	task redundancy();
 		begin
 
-
-		if (board[0] == `EMPTY && used ==0)begin
+		if (board[0] == `EMPTY)begin
 			board[0] = `X;
-			used =1;
 		end
-		if (board[1] == `EMPTY && used ==0)begin
+		
+		else if (board[1] == `EMPTY)begin
 			board[1] = `X;
-			used =1;
 		end
-		if (board[2] == `EMPTY && used ==0)begin
+		
+		else if (board[2] == `EMPTY)begin
 			board[2] = `X;
-			used =1;
 		end
-		if (board[3] == `EMPTY && used ==0)begin
+		
+		else if (board[3] == `EMPTY)begin
 			board[3] = `X;
-			used =1;
 		end
-		if (board[4] == `EMPTY && used ==0)begin
+		
+		else if (board[4] == `EMPTY)begin
 			board[4] = `X;
-			used =1;
 		end
-		if (board[5] == `EMPTY && used ==0)begin
+		
+		else if (board[5] == `EMPTY)begin
 			board[5] = `X;
-			used =1;
 		end
-		if (board[6] == `EMPTY && used ==0)begin
+		
+		else if (board[6] == `EMPTY)begin
 			board[6] = `X;
-			used =1;
 		end
-		if (board[7] == `EMPTY && used ==0)begin
+		
+		else if (board[7] == `EMPTY)begin
 			board[7] = `X;
-			used =1;
 		end
-		if (board[8] == `EMPTY && used ==0)begin
+		
+		else if (board[8] == `EMPTY)begin
 			board[8] = `X;
-			used =1;
 		end
 
 		end
