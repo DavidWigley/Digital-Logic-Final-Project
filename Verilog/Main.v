@@ -100,9 +100,9 @@ module simulation(input integer userInput,input reg sendSignal);
 
 
 	initial begin
-	initBoard(); // initialize the board (this should onley happen once)
-	initEmpties();
-	$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8], "\n\n\n\n"); //hopefully this looks somewhat right and technically this should update when these values update;
+		initBoard(); // initialize the board (this should onley happen once)
+		initEmpties();
+		$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8], "\n\n\n\n"); //hopefully this looks somewhat right and technically this should update when these values update;
 
 	end
 
@@ -497,37 +497,46 @@ module simulation(input integer userInput,input reg sendSignal);
 	  */
 	task isBoardFull();
 		begin
-		isBoardFullVal = 1; //assume board is full unless proven otherwise
-		if (board[0] == `EMPTY && isBoardFullVal==1)begin
-			isBoardFullVal =0;
+			isBoardFullVal = 1; //assume board is full unless proven otherwise
+			
+			if (board[0] == `EMPTY)begin
+				isBoardFullVal =0;
+			end
+			
+			else if (board[1] == `EMPTY)begin
+				isBoardFullVal =0;
+			end
+			
+			else if (board[2] == `EMPTY)begin
+				isBoardFullVal =0;
+			end
+			
+			else if (board[3] == `EMPTY)begin
+				isBoardFullVal =0;
+			end
+			
+			else if (board[4] == `EMPTY)begin
+				isBoardFullVal =0;
+			end
+			
+			else if (board[5] == `EMPTY)begin
+				isBoardFullVal =0;
+			end
+			
+			else if (board[6] == `EMPTY)begin
+				isBoardFullVal =0;
+			end
+			
+			else if (board[7] == `EMPTY)begin
+				isBoardFullVal =0;
+			end
+			
+			else if (board[8] == `EMPTY)begin
+				isBoardFullVal =0;
+			end
+			
 		end
-		if (board[1] == `EMPTY && isBoardFullVal==1)begin
-			isBoardFullVal =0;
-		end
-		if (board[2] == `EMPTY && isBoardFullVal==1)begin
-			isBoardFullVal =0;
-		end
-		if (board[3] == `EMPTY && isBoardFullVal==1)begin
-			isBoardFullVal =0;
-		end
-		if (board[4] == `EMPTY && isBoardFullVal==1)begin
-			isBoardFullVal =0;
-		end
-		if (board[5] == `EMPTY && isBoardFullVal==1)begin
-			isBoardFullVal =0;
-		end
-		if (board[6] == `EMPTY && isBoardFullVal==1)begin
-			isBoardFullVal =0;
-		end
-		if (board[7] == `EMPTY && isBoardFullVal==1)begin
-			isBoardFullVal =0;
-		end
-		if (board[8] == `EMPTY && isBoardFullVal==1)begin
-			isBoardFullVal =0;
-		end
-
-
-		end
+		
 	endtask
 
 
