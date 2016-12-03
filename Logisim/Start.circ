@@ -87,6 +87,34 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <wire from="(370,350)" to="(820,350)"/>
     <wire from="(370,500)" to="(760,500)"/>
     <wire from="(360,450)" to="(750,450)"/>
+    <comp lib="0" loc="(360,280)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="used2"/>
+    </comp>
+    <comp lib="0" loc="(360,400)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="used5"/>
+    </comp>
+    <comp lib="0" loc="(360,450)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="used6"/>
+    </comp>
+    <comp lib="1" loc="(880,360)" name="AND Gate">
+      <a name="inputs" val="9"/>
+      <a name="negate0" val="true"/>
+      <a name="negate1" val="true"/>
+      <a name="negate2" val="true"/>
+      <a name="negate3" val="true"/>
+      <a name="negate4" val="true"/>
+      <a name="negate5" val="true"/>
+      <a name="negate6" val="true"/>
+      <a name="negate7" val="true"/>
+      <a name="negate8" val="true"/>
+    </comp>
+    <comp lib="0" loc="(360,190)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="used0"/>
+    </comp>
     <comp lib="0" loc="(360,320)" name="Pin">
       <a name="tristate" val="false"/>
       <a name="label" val="used3"/>
@@ -95,33 +123,9 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="tristate" val="false"/>
       <a name="label" val="used7"/>
     </comp>
-    <comp lib="1" loc="(880,360)" name="XOR Gate">
-      <a name="inputs" val="9"/>
-      <a name="xor" val="odd"/>
-    </comp>
-    <comp lib="0" loc="(360,230)" name="Pin">
-      <a name="tristate" val="false"/>
-      <a name="label" val="used1"/>
-    </comp>
-    <comp lib="0" loc="(360,400)" name="Pin">
-      <a name="tristate" val="false"/>
-      <a name="label" val="used5"/>
-    </comp>
     <comp lib="0" loc="(360,530)" name="Pin">
       <a name="tristate" val="false"/>
       <a name="label" val="used8"/>
-    </comp>
-    <comp lib="0" loc="(360,450)" name="Pin">
-      <a name="tristate" val="false"/>
-      <a name="label" val="used6"/>
-    </comp>
-    <comp lib="0" loc="(360,190)" name="Pin">
-      <a name="tristate" val="false"/>
-      <a name="label" val="used0"/>
-    </comp>
-    <comp lib="0" loc="(360,280)" name="Pin">
-      <a name="tristate" val="false"/>
-      <a name="label" val="used2"/>
     </comp>
     <comp lib="0" loc="(360,360)" name="Pin">
       <a name="tristate" val="false"/>
@@ -132,6 +136,10 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
       <a name="output" val="true"/>
       <a name="label" val="start"/>
       <a name="labelloc" val="east"/>
+    </comp>
+    <comp lib="0" loc="(360,230)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="used1"/>
     </comp>
   </circuit>
 </project>
