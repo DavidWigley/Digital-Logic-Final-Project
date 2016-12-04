@@ -28,7 +28,7 @@ simulation mySimulation(userInput,sendSignal);
 
 initial begin
 
-	//Playing a full game where we tie :').
+/*	//Playing a full game where we tie :').
 	#2 userInput = 5;
 	   sendSignal = 1;
 	#5 sendSignal = 0;
@@ -43,10 +43,10 @@ initial begin
 	#5 sendSignal = 0;
 	#2 userInput = 3;
 	   sendSignal = 1;
-	#5 sendSignal = 0;
+	#5 sendSignal = 0; */
 
 
-/* //This test case works in our favor (we win)
+ //This test case works in our favor (we win)
 #2 userInput = 5;
 	   sendSignal = 1;
 	#5 sendSignal = 0;
@@ -57,7 +57,7 @@ initial begin
 	   sendSignal = 1;
 	#5 sendSignal = 0;
 	#5  userInput = 0;
-	   sendSignal = 1;*/
+	   sendSignal = 1;
 end
 
 endmodule
@@ -242,32 +242,32 @@ module simulation(input integer userInput,input reg sendSignal);
 
 			if (canIWinFirstColumnVal > currentMatches) begin
 				currentMatches = canIWinFirstColumnVal;
-				myPriority = `HORIZ1;
+				myPriority = `VERT1;
 			end
 
 			if (canIWinSecondColumnVal > currentMatches) begin
 				currentMatches = canIWinSecondColumnVal;
-				myPriority = `HORIZ2;
+				myPriority = `VERT2;
 			end
 
 			if (canIWinThirdColumnVal > currentMatches) begin
 				currentMatches = canIWinThirdColumnVal;
-				myPriority = `HORIZ3;
+				myPriority = `VERT3;
 			end
 
 			if (canIWinFirstRowVal > currentMatches) begin
 				currentMatches = canIWinFirstRowVal;
-				myPriority = `VERT1;
+				myPriority = `HORIZ1;
 			end
 
 			if (canIWinSecondRowVal > currentMatches) begin
 				currentMatches = canIWinSecondRowVal;
-				myPriority = `VERT2;
+				myPriority = `HORIZ2;
 			end
 
 			if (canIWinThirdRowVal > currentMatches) begin
 				currentMatches = canIWinThirdRowVal;
-				myPriority = `VERT3;
+				myPriority = `HORIZ3;
 			end
 		end
 	endtask
@@ -278,165 +278,165 @@ module simulation(input integer userInput,input reg sendSignal);
 	task insertX();
 		begin
 			//L DIAG
-			if (myPriority== 1) begin
+			if (myPriority == `LDIAG) begin
 				//checks all the left diag spots to find missing and fill
 				if (isEmptyVals[4] == 1) begin
 					//middle is always priority
-					board[4]=2;
+					board[4]=`X;
 					$display("Box was: 4");
 				end
 
 				else if (isEmptyVals[0] == 1) begin
 					//I already had middle take top left
-					board[0]=2;
+					board[0]=`X;
 					$display("Box was: 0");
 				end
 
 				else begin
 					//I already had top left and middle take bottom right. Could add redundancy
-					board[8]=2;
+					board[8]=`X;
 					$display("Box was: 8");
 				end
 			end
 			//R DIAG
-			else if(myPriority==2) begin
+			else if(myPriority == `RDIAG) begin
 				//checks all the right diag spots to find missing and fill
 				if (isEmptyVals[4]==1) begin
 					//middle is always priority
-					board[4]=2;
+					board[4]=`X;
 					$display("Box was: 4");
 				end
 
 				else if (isEmptyVals[6]==1) begin
 					//I already had middle take bottom left
-					board[6] =2;
+					board[6] =`X;
 					$display("Box was: 6");
 				end
 
 				else begin
 					//I already had bottom left and middle take top right. Could add redundancy
-					board[2]=2;
+					board[2]=`X;
 					$display("Box was: 2");
 				end
 			end
 			//Verilog is the kid who just licks the walls in elementary school
 			//1st row
-			else if (myPriority == 6) begin
+			else if (myPriority == `HORIZ1) begin
 				if (isEmptyVals[0]==1) begin
 					//top left
-					board[0] = 2;
+					board[0] = `X;
 					$display("Box was: 0");
 				end
 
 				else if (isEmptyVals[1]==1) begin
 					//top middle
-					board[1] = 2;
+					board[1] = `X;
 					$display("Box was: 1");
 				end
 
 				 else if (isEmptyVals[2]==1) begin
 					//bottom left
-					board[2] = 2;
+					board[2] = `X;
 					$display("Box was: 2");
 				end
 			end
 			//2nd row
-			else if (myPriority == 7) begin
+			else if (myPriority == `HORIZ2) begin
 				if (isEmptyVals[3] ==1) begin
 					//middle left
-					board[3] = 2;
+					board[3] = `X;
 					$display("Box was: 3");
 				end
 
 				else if (isEmptyVals[4] ==1) begin
 					//middle middle
-					board[4] = 2;
+					board[4] = `X;
 					$display("Box was: 4");
 				end
 
 				else if (isEmptyVals[5]==1) begin
 					//bottom middle
-					board[5] = 2;
+					board[5] = `X;
 					$display("Box was: 5");
 				end
 			end
 			//third row
-			else if (myPriority == 8) begin
+			else if (myPriority == `HORIZ3) begin
 				if (isEmptyVals[6] ==1) begin
 					//bottom right
-					board[6] = 2;
+					board[6] = `X;
 					$display("Box was: 6");
 				end
 
 				else if (isEmptyVals[7] ==1) begin
 					//bottom middle
-					board[7] = 2;
+					board[7] = `X;
 					$display("Box was: 7");
 				end
 
 				else if (isEmptyVals[8] ==1) begin
 					//bottom right
-					board[8] = 2;
+					board[8] = `X;
 					$display("Box was: 8");
 				end
 			end
 			//first column
-			else if (myPriority == 3) begin
+			else if (myPriority == `VERT1) begin
 				if (isEmptyVals[0] == 1) begin
 					//top left
-					board[0] = 2;
+					board[0] = `X;
 					$display("Box was: 0");
 				end
 
 				else if (isEmptyVals[3] ==1) begin
 					//middle left
-					board[3] = 2;
+					board[3] = `X;
 					$display("Box was: 3");
 				end
 
 				else if (isEmptyVals[6] ==1) begin
 					//bottom left
-					board[6] = 2;
+					board[6] = `X;
 					$display("Box was: 6");
 				end
 			end
 			//second column
-			else if (myPriority == 4) begin
+			else if (myPriority == `VERT2) begin
 				if (isEmptyVals[1] ==1) begin
 					//top middle
-					board[1] = 2;
+					board[1] = `X;
 					$display("Box was: 1");
 				end
 
 				else if (isEmptyVals[4] ==1) begin
 					//middle middle
-					board[4] = 2;
+					board[4] = `X;
 					$display("Box was: 4");
 				end
 
 				else if (isEmptyVals[7] ==1) begin
 					//middle bottom
-					board[7] = 2;
+					board[7] = `X;
 					$display("Box was: 7");
 				end
 			end
 			//third column
-			else if (myPriority == 5) begin
+			else if (myPriority == `VERT3) begin
 				if (isEmptyVals[2] ==1) begin
 					//top right
-					board[2] = 2;
+					board[2] = `X;
 					$display("Box was: 2");
 				end
 
 				else if (isEmptyVals[5] ==1) begin
 					//middle right
-					board[5] = 2;
+					board[5] = `X;
 					$display("Box was: 5");
 				end
 
 				else if (isEmptyVals[8] == 1) begin
 					//bottom right
-					board[8] = 2;
+					board[8] = `X;
 					$display("Box was: 8");
 				end
 			end
@@ -644,26 +644,26 @@ module simulation(input integer userInput,input reg sendSignal);
 			oppCounter = 0;
 
 			if (board[0] == `X)begin
-				//ok I got the top right corner
+				//ok I got the top left corner
 				counter = counter + 1;
 			end else if (board[0] == `O)begin
-				//he got top right
+				//he got top left
 				oppCounter = oppCounter + 1;
 			end
 
 			if(board[1] == `X)begin
-				//k i got the middle
+				//k i got the top middle
 				counter = counter + 1;
 			end else if (board[1] == `O)begin
-				//he got middle
+				//he got top middle
 				oppCounter = oppCounter + 1;
 			end
 
 			if(board[2] == `X)begin
-				//ok i got bottom left
+				//ok i got top right
 				counter = counter + 1;
 			end else if (board[2] == `O)begin
-				//he got bottom left
+				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
@@ -955,7 +955,6 @@ module simulation(input integer userInput,input reg sendSignal);
 			end
 			if (board[4] != `EMPTY) begin
 				isEmptyVals[4] = 0;
-				//$display("4 is filled now");
 			end
 			if (board[5] != `EMPTY) begin
 				isEmptyVals[5] = 0;
