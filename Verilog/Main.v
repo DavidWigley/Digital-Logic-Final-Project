@@ -115,9 +115,9 @@ module simulation(input integer userInput,input reg sendSignal);
 			if (board[userInput] == 0)begin //the slot the user wants to use is empty
 				board[userInput] = 1; //enter a 0 for the user
 			end
-		else begin
-			errorMessage = -1; //the slot wasnt empty so by setting this to -1 the computer shouldnt add another x
-		end
+			else begin
+				errorMessage = -1; //the slot wasnt empty so by setting this to -1 the computer shouldnt add another x
+			end
 		end
 		if (errorMessage != -1) begin //if the users input is valid
 			myPriority = -1; //resetting these variables from the last simulation
