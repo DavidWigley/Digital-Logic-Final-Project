@@ -1,24 +1,23 @@
-//win condition states
-`define EXIT_CODE 999
-`define CONTESTED -2
-`define FORTHEWIN 666
-`define BLOCK 3
+`define EXIT_CODE = 999
+`define CONTESTED = -2
+`define FORTHEWIN = 666
+`define BLOCK = 3
 
-//Tile state consts
+//got sick of having to remember #'s
 `define EMPTY 0
 `define O 1
 `define X 2
 
 
 //priority naming
-`define LDIAG 1
-`define RDIAG 2
-`define HORIZ1 3
-`define HORIZ2 4
-`define HORIZ3 5
-`define VERT1 6
-`define VERT2 7
-`define VERT3 8
+`define LDIAG = 1
+`define RDIAG = 2
+`define HORIZ1 = 3
+`define HORIZ2 = 4
+`define HORIZ3 = 5
+`define VERT1 = 6
+`define VERT2 = 7
+`define VERT3 = 8
 
 module test();
 
@@ -28,7 +27,7 @@ simulation mySimulation(userInput,sendSignal);
 
 initial begin
 
-/*	//Playing a full game where we tie :').
+	//Playing a full game where we tie :').
 	#2 userInput = 5;
 	   sendSignal = 1;
 	#5 sendSignal = 0;
@@ -43,10 +42,10 @@ initial begin
 	#5 sendSignal = 0;
 	#2 userInput = 3;
 	   sendSignal = 1;
-	#5 sendSignal = 0; */
+	#5 sendSignal = 0;
 
 
- //This test case works in our favor (we win)
+/* //This test case works in our favor (we win)
 #2 userInput = 5;
 	   sendSignal = 1;
 	#5 sendSignal = 0;
@@ -57,17 +56,13 @@ initial begin
 	   sendSignal = 1;
 	#5 sendSignal = 0;
 	#5  userInput = 0;
-	   sendSignal = 1;
+	   sendSignal = 1;*/
 end
 
 endmodule
 
-	//THE COMPUTER WILL CONTROL X
-
-
 module simulation(input integer userInput,input reg sendSignal);
 
-	//global vars for storing each win combos state
 	integer canIWinFirstRowVal;
 	integer canIWinSecondRowVal;
 	integer canIWinThirdRowVal;
@@ -77,8 +72,19 @@ module simulation(input integer userInput,input reg sendSignal);
 	integer canIWinDiagonallyLeftVal;
 	integer canIWinDiagonallyRightVal;
 
-	
-	reg isEmptyVals[8:0]; //9 element array storing taken or empty values for all tiles
+	reg isEmpty0 =1;
+	reg isEmpty1 =1;
+	reg isEmpty2 =1;
+	reg isEmpty3 =1;
+	reg isEmpty4 =1;
+	reg isEmpty5 =1;
+	reg isEmpty6 =1;
+	reg isEmpty7 =1;
+	reg isEmpty8 =1;
+
+
+	wire [7:0]result;
+	wire overflow;
 	integer board [8:0]; //a 9 element array storing all slots on the board
 	integer errorMessage = 0; //this will become -1 if the user enters an invalid input and will bypass the rest of the simulation
 
@@ -88,10 +94,11 @@ module simulation(input integer userInput,input reg sendSignal);
 	integer checkIfFinishedVal = 0;
 	integer isBoardFullVal = 0; //its full unless I say otherwise
 
-	//global var that gets reused for counting how many myself and the opponent have
 	integer counter = 0;
 	integer oppCounter = 0;
 
+
+	integer used = 0;
 
 	//Here is what the board will look like
 	//  0    1    2
@@ -100,9 +107,9 @@ module simulation(input integer userInput,input reg sendSignal);
 
 
 	initial begin
-		initBoard(); // initialize the board (this should onley happen once)
-		initEmpties();
-		$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8], "\n\n\n\n"); //hopefully this looks somewhat right and technically this should update when these values update;
+	initBoard(); // initialize the board (this should onley happen once)
+	$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8], "\n\n\n\n"); //hopefully this looks somewhat right and technically this should update when these values update;
+
 
 	end
 
@@ -112,79 +119,68 @@ module simulation(input integer userInput,input reg sendSignal);
 			errorMessage = -1;
 		end
 		else begin
-			if (board[userInput] == 0)begin //the slot the user wants to use is empty
-				board[userInput] = 1; //enter a 0 for the user
-			end
-			else begin
-				errorMessage = -1; //the slot wasnt empty so by setting this to -1 the computer shouldnt add another x
-			end
+		if (board[userInput] == 0)begin //the slot the user wants to use is empty
+			board[userInput] = 1; //enter a 0 for the user
 		end
-		if (errorMessage != -1) begin //if the users input is valid
-			myPriority = -1; //resetting these variables from the last simulation
-			currentMatches = -1; //resetting these variables from the last simulation
-
-			isEmpty();
-			determinePriority(); // determine the new priority based on the board
-			isBoardFull(); //make sure the board isnt full. Doesnt call exit just sets a var
-			checkIfFinished(); //check if someone has won or the boards full. If so quit
-			if (myPriority == -1) begin //if every priority returns garbage
-				redundancy(); //insert an x into the first open spot found
-			end
-			else begin
-				insertX(); //now actually insert an x that is logical
-				$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8]); //hopefully this looks somewhat right and technically this should update when these values update;
-				$display("X inserted, MyPriority was: ",myPriority, "\n\n\n\n");
-			end
-
-			isBoardFull(); //make sure the board isnt full. Doesnt call exit just sets a var
-			checkIfFinished(); //check if someone has won or the boards full. If so quit
+		else begin
+			errorMessage = -1; //the slot wasnt empty so by setting this to -1 the computer shouldnt add another x
 		end
+		end
+	if (errorMessage != -1) begin //if the users input is valid
+		myPriority = -1; //resetting these variables from the last simulation
+		currentMatches = -1; //resetting these variables from the last simulation
+
+		isEmpty();
+		determinePriority(); // determine the new priority based on the board
+		isBoardFull();
+		checkIfFinished();
+		if (myPriority == -1) begin //if every priority returns garbage
+			redundancy(); //insert an x into the first open spot found
+		end
+		else begin
+		 insertX(); //now actually insert an x that is logical
+		$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8]); //hopefully this looks somewhat right and technically this should update when these values update;
+		$display("X inserted, MyPriority was: ",myPriority, "\n\n\n\n");
+		end
+
+		isBoardFull();
+		checkIfFinished();
+	end
 	errorMessage = 0; //reset error message to 0 for the next input
   end
 
+	//THE COMPUTER WILL CONTROL X
 
 	/**
-	 * Make all the spots empty.
-	 * Run concurrently. Each is independent
-         */
+	  * The convention for storing letters is the following
+	  * 0 = empty
+	  * 1 = O
+	  * 2 = X
+	  * else means something is fucked
+      */
 	task initBoard(); begin
-		board[0] <= `EMPTY;
-		board[1] <= `EMPTY;
-		board[2] <= `EMPTY;
-		board[3] <= `EMPTY;
-		board[4] <= `EMPTY;
-		board[5] <= `EMPTY;
-		board[6] <= `EMPTY;
-		board[7] <= `EMPTY;
-		board[8] <= `EMPTY;
+		board[0] = 0;
+		board[1] = 0;
+		board[2] = 0;
+		board[3] = 0;
+		board[4] = 0;
+		board[5] = 0;
+		board[6] = 0;
+		board[7] = 0;
+		board[8] = 0;
+
 	end
 	endtask
 
-	/**
-	 * Make all the is empty variables true because all tiles are empty
-	 * Run concurrently. Each is independent
-	 */
-	task initEmpties(); begin
-		isEmptyVals[0] <= 1;
-		isEmptyVals[1] <= 1;
-		isEmptyVals[2] <= 1;
-		isEmptyVals[3] <= 1;
-		isEmptyVals[4] <= 1;
-		isEmptyVals[5] <= 1;
-		isEmptyVals[6] <= 1;
-		isEmptyVals[7] <= 1;
-		isEmptyVals[8] <= 1;
-	end
-	endtask
 
 	/*
 	 * Function that will see if the game is finished or not. Bool return (in verilog its reg because verilog is so damn cool)
 	 */
 	task checkIfFinished();
 		begin
-			if (canIWinDiagonallyLeftVal == `EXIT_CODE || canIWinDiagonallyRightVal == `EXIT_CODE ||
-					canIWinFirstRowVal == `EXIT_CODE || canIWinSecondRowVal == `EXIT_CODE || canIWinThirdRowVal == `EXIT_CODE||
-					canIWinFirstColumnVal == `EXIT_CODE || canIWinSecondColumnVal == `EXIT_CODE || canIWinThirdColumnVal == `EXIT_CODE ||
+			if (canIWinDiagonallyLeftVal == 999 || canIWinDiagonallyRightVal == 999 ||
+					canIWinFirstRowVal == 999 || canIWinSecondRowVal == 999 || canIWinThirdRowVal == 999||
+					canIWinFirstColumnVal == 999 || canIWinSecondColumnVal == 999 || canIWinThirdColumnVal == 999 ||
 					isBoardFullVal == 1)
 				begin
 					//someone won somehow or the board was filled
@@ -204,17 +200,16 @@ module simulation(input integer userInput,input reg sendSignal);
 	 */
 	task determinePriority();
 		begin
-			//run concurrently reset these values
-			currentMatches <= -1;
-			myPriority <= -1; //rezero these
-			canIWinFirstRowVal <= 0;
-			canIWinSecondRowVal<=0;
-			canIWinThirdRowVal<=0;
-	 		canIWinFirstColumnVal<=0;
-	 		canIWinSecondColumnVal<=0;
-	 		canIWinThirdColumnVal<=0;
-			canIWinDiagonallyLeftVal<=0;
-			canIWinDiagonallyRightVal<=0;
+			currentMatches = -1;
+			myPriority = -1; //rezero these
+			canIWinFirstRowVal =0;
+			canIWinSecondRowVal=0;
+			canIWinThirdRowVal=0;
+	 		canIWinFirstColumnVal=0;
+	 		canIWinSecondColumnVal=0;
+	 		canIWinThirdColumnVal=0;
+			canIWinDiagonallyLeftVal=0;
+			canIWinDiagonallyRightVal=0;
 
 			canIWinFirstRow();
 			canIWinSecondRow();
@@ -231,43 +226,43 @@ module simulation(input integer userInput,input reg sendSignal);
 			//These must be if's and not else ifs because they all need to check. Else if would break after 1.
 			//If these things run in parallel and I get threading problems I'm going to be upset
 			if (canIWinDiagonallyLeftVal > currentMatches) begin
-				myPriority = `LDIAG;
+				myPriority = 1;
 				currentMatches = canIWinDiagonallyLeftVal;
 			end
 
 			if (canIWinDiagonallyRightVal > currentMatches) begin
 				currentMatches = canIWinDiagonallyRightVal;
-				myPriority = `RDIAG;
+				myPriority = 2;
 			end
 
 			if (canIWinFirstColumnVal > currentMatches) begin
 				currentMatches = canIWinFirstColumnVal;
-				myPriority = `VERT1;
+				myPriority = 3;
 			end
 
 			if (canIWinSecondColumnVal > currentMatches) begin
 				currentMatches = canIWinSecondColumnVal;
-				myPriority = `VERT2;
+				myPriority = 4;
 			end
 
 			if (canIWinThirdColumnVal > currentMatches) begin
 				currentMatches = canIWinThirdColumnVal;
-				myPriority = `VERT3;
+				myPriority = 5;
 			end
 
 			if (canIWinFirstRowVal > currentMatches) begin
 				currentMatches = canIWinFirstRowVal;
-				myPriority = `HORIZ1;
+				myPriority = 6;
 			end
 
 			if (canIWinSecondRowVal > currentMatches) begin
 				currentMatches = canIWinSecondRowVal;
-				myPriority = `HORIZ2;
+				myPriority = 7;
 			end
 
 			if (canIWinThirdRowVal > currentMatches) begin
 				currentMatches = canIWinThirdRowVal;
-				myPriority = `HORIZ3;
+				myPriority = 8;
 			end
 		end
 	endtask
@@ -278,165 +273,166 @@ module simulation(input integer userInput,input reg sendSignal);
 	task insertX();
 		begin
 			//L DIAG
-			if (myPriority == `LDIAG) begin
+			if (myPriority== 1) begin
 				//checks all the left diag spots to find missing and fill
-				if (isEmptyVals[4] == 1) begin
+				if (isEmpty4 == 1) begin
 					//middle is always priority
-					board[4]=`X;
+					board[4]=2;
 					$display("Box was: 4");
 				end
 
-				else if (isEmptyVals[0] == 1) begin
+				else if (isEmpty0 == 1) begin
 					//I already had middle take top left
-					board[0]=`X;
+					board[0]=2;
 					$display("Box was: 0");
 				end
 
 				else begin
 					//I already had top left and middle take bottom right. Could add redundancy
-					board[8]=`X;
+					board[8]=2;
 					$display("Box was: 8");
 				end
 			end
 			//R DIAG
-			else if(myPriority == `RDIAG) begin
+			else if(myPriority==2) begin
 				//checks all the right diag spots to find missing and fill
-				if (isEmptyVals[4]==1) begin
+				if (isEmpty4==1) begin
 					//middle is always priority
-					board[4]=`X;
+					board[4]=2;
 					$display("Box was: 4");
+					$display(isEmpty4);
 				end
 
-				else if (isEmptyVals[6]==1) begin
+				else if (isEmpty6==1) begin
 					//I already had middle take bottom left
-					board[6] =`X;
+					board[6] =2;
 					$display("Box was: 6");
 				end
 
 				else begin
 					//I already had bottom left and middle take top right. Could add redundancy
-					board[2]=`X;
+					board[2]=2;
 					$display("Box was: 2");
 				end
 			end
 			//Verilog is the kid who just licks the walls in elementary school
 			//1st row
-			else if (myPriority == `HORIZ1) begin
-				if (isEmptyVals[0]==1) begin
+			else if (myPriority == 6) begin
+				if (isEmpty0==1) begin
 					//top left
-					board[0] = `X;
+					board[0] = 2;
 					$display("Box was: 0");
 				end
 
-				else if (isEmptyVals[1]==1) begin
+				else if (isEmpty1==1) begin
 					//top middle
-					board[1] = `X;
+					board[1] = 2;
 					$display("Box was: 1");
 				end
 
-				 else if (isEmptyVals[2]==1) begin
+				 else if (isEmpty2==1) begin
 					//bottom left
-					board[2] = `X;
+					board[2] = 2;
 					$display("Box was: 2");
 				end
 			end
 			//2nd row
-			else if (myPriority == `HORIZ2) begin
-				if (isEmptyVals[3] ==1) begin
+			else if (myPriority == 7) begin
+				if (isEmpty3 ==1) begin
 					//middle left
-					board[3] = `X;
+					board[3] = 2;
 					$display("Box was: 3");
 				end
 
-				else if (isEmptyVals[4] ==1) begin
+				else if (isEmpty4 ==1) begin
 					//middle middle
-					board[4] = `X;
+					board[4] = 2;
 					$display("Box was: 4");
 				end
 
-				else if (isEmptyVals[5]==1) begin
+				else if (isEmpty5==1) begin
 					//bottom middle
-					board[5] = `X;
+					board[5] = 2;
 					$display("Box was: 5");
 				end
 			end
 			//third row
-			else if (myPriority == `HORIZ3) begin
-				if (isEmptyVals[6] ==1) begin
+			else if (myPriority == 8) begin
+				if (isEmpty6 ==1) begin
 					//bottom right
-					board[6] = `X;
+					board[6] = 2;
 					$display("Box was: 6");
 				end
 
-				else if (isEmptyVals[7] ==1) begin
+				else if (isEmpty7 ==1) begin
 					//bottom middle
-					board[7] = `X;
+					board[7] = 2;
 					$display("Box was: 7");
 				end
 
-				else if (isEmptyVals[8] ==1) begin
+				else if (isEmpty8 ==1) begin
 					//bottom right
-					board[8] = `X;
+					board[8] = 2;
 					$display("Box was: 8");
 				end
 			end
 			//first column
-			else if (myPriority == `VERT1) begin
-				if (isEmptyVals[0] == 1) begin
+			else if (myPriority == 3) begin
+				if (isEmpty0 == 1) begin
 					//top left
-					board[0] = `X;
+					board[0] = 2;
 					$display("Box was: 0");
 				end
 
-				else if (isEmptyVals[3] ==1) begin
+				else if (isEmpty3 ==1) begin
 					//middle left
-					board[3] = `X;
+					board[3] = 2;
 					$display("Box was: 3");
 				end
 
-				else if (isEmptyVals[6] ==1) begin
+				else if (isEmpty6 ==1) begin
 					//bottom left
-					board[6] = `X;
+					board[6] = 2;
 					$display("Box was: 6");
 				end
 			end
 			//second column
-			else if (myPriority == `VERT2) begin
-				if (isEmptyVals[1] ==1) begin
+			else if (myPriority == 4) begin
+				if (isEmpty1 ==1) begin
 					//top middle
-					board[1] = `X;
+					board[1] = 2;
 					$display("Box was: 1");
 				end
 
-				else if (isEmptyVals[4] ==1) begin
+				else if (isEmpty4 ==1) begin
 					//middle middle
-					board[4] = `X;
+					board[4] = 2;
 					$display("Box was: 4");
 				end
 
-				else if (isEmptyVals[7] ==1) begin
+				else if (isEmpty7 ==1) begin
 					//middle bottom
-					board[7] = `X;
+					board[7] = 2;
 					$display("Box was: 7");
 				end
 			end
 			//third column
-			else if (myPriority == `VERT3) begin
-				if (isEmptyVals[2] ==1) begin
+			else if (myPriority == 5) begin
+				if (isEmpty2 ==1) begin
 					//top right
-					board[2] = `X;
+					board[2] = 2;
 					$display("Box was: 2");
 				end
 
-				else if (isEmptyVals[5] ==1) begin
+				else if (isEmpty5 ==1) begin
 					//middle right
-					board[5] = `X;
+					board[5] = 2;
 					$display("Box was: 5");
 				end
 
-				else if (isEmptyVals[8] == 1) begin
+				else if (isEmpty8 == 1) begin
 					//bottom right
-					board[8] = `X;
+					board[8] = 2;
 					$display("Box was: 8");
 				end
 			end
@@ -453,40 +449,42 @@ module simulation(input integer userInput,input reg sendSignal);
 	task redundancy();
 		begin
 
-		if (board[0] == `EMPTY)begin
-			board[0] = `X;
+
+		if (board[0] == 0 && used ==0)begin
+			board[0] = 2;
+			used =1;
 		end
-		
-		else if (board[1] == `EMPTY)begin
-			board[1] = `X;
+		if (board[1] == 0 && used ==0)begin
+			board[1] = 2;
+			used =1;
 		end
-		
-		else if (board[2] == `EMPTY)begin
-			board[2] = `X;
+		if (board[2] == 0 && used ==0)begin
+			board[2] = 2;
+			used =1;
 		end
-		
-		else if (board[3] == `EMPTY)begin
-			board[3] = `X;
+		if (board[3] == 0 && used ==0)begin
+			board[3] = 2;
+			used =1;
 		end
-		
-		else if (board[4] == `EMPTY)begin
-			board[4] = `X;
+		if (board[4] == 0 && used ==0)begin
+			board[4] = 2;
+			used =1;
 		end
-		
-		else if (board[5] == `EMPTY)begin
-			board[5] = `X;
+		if (board[5] == 0 && used ==0)begin
+			board[5] = 2;
+			used =1;
 		end
-		
-		else if (board[6] == `EMPTY)begin
-			board[6] = `X;
+		if (board[6] == 0 && used ==0)begin
+			board[6] = 2;
+			used =1;
 		end
-		
-		else if (board[7] == `EMPTY)begin
-			board[7] = `X;
+		if (board[7] == 0 && used ==0)begin
+			board[7] = 2;
+			used =1;
 		end
-		
-		else if (board[8] == `EMPTY)begin
-			board[8] = `X;
+		if (board[8] == 0 && used ==0)begin
+			board[8] = 2;
+			used =1;
 		end
 
 		end
@@ -497,46 +495,37 @@ module simulation(input integer userInput,input reg sendSignal);
 	  */
 	task isBoardFull();
 		begin
-			isBoardFullVal = 1; //assume board is full unless proven otherwise
-			
-			if (board[0] == `EMPTY)begin
-				isBoardFullVal =0;
-			end
-			
-			else if (board[1] == `EMPTY)begin
-				isBoardFullVal =0;
-			end
-			
-			else if (board[2] == `EMPTY)begin
-				isBoardFullVal =0;
-			end
-			
-			else if (board[3] == `EMPTY)begin
-				isBoardFullVal =0;
-			end
-			
-			else if (board[4] == `EMPTY)begin
-				isBoardFullVal =0;
-			end
-			
-			else if (board[5] == `EMPTY)begin
-				isBoardFullVal =0;
-			end
-			
-			else if (board[6] == `EMPTY)begin
-				isBoardFullVal =0;
-			end
-			
-			else if (board[7] == `EMPTY)begin
-				isBoardFullVal =0;
-			end
-			
-			else if (board[8] == `EMPTY)begin
-				isBoardFullVal =0;
-			end
-			
+		isBoardFullVal = 1; //assume board is full unless proven otherwise
+		if (board[0] == 0 && isBoardFullVal==1)begin
+			isBoardFullVal =0;
 		end
-		
+		if (board[1] == 0 && isBoardFullVal==1)begin
+			isBoardFullVal =0;
+		end
+		if (board[2] == 0 && isBoardFullVal==1)begin
+			isBoardFullVal =0;
+		end
+		if (board[3] == 0 && isBoardFullVal==1)begin
+			isBoardFullVal =0;
+		end
+		if (board[4] == 0 && isBoardFullVal==1)begin
+			isBoardFullVal =0;
+		end
+		if (board[5] == 0 && isBoardFullVal==1)begin
+			isBoardFullVal =0;
+		end
+		if (board[6] == 0 && isBoardFullVal==1)begin
+			isBoardFullVal =0;
+		end
+		if (board[7] == 0 && isBoardFullVal==1)begin
+			isBoardFullVal =0;
+		end
+		if (board[8] == 0 && isBoardFullVal==1)begin
+			isBoardFullVal =0;
+		end
+
+
+		end
 	endtask
 
 
@@ -549,38 +538,38 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[0] == `X)begin
+			if (board[0] == 2)begin
 				//ok I got the top left corner
 				counter = counter + 1;
-			end else if (board[0] == `O )begin
+			end else if (board[0] == 1 )begin
 				//he got top left
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[4] == `X)begin
+			if(board[4] == 2)begin
 				//k i got the middle
 				counter = counter + 1;
-			end else if (board[4] == `O)begin
+			end else if (board[4] == 1)begin
 				//he got middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[8] == `X)begin
+			if(board[8] == 2)begin
 				//ok i got bottom right
 				counter = counter + 1;
-			end else if (board[8] == `O)begin
+			end else if (board[8] == 1)begin
 				//he got bottom right
 				oppCounter = oppCounter + 1;
 			end
 
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinDiagonallyLeftVal = `EXIT_CODE; //somebody has 3 in a row
+				canIWinDiagonallyLeftVal = 999; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinDiagonallyLeftVal = `CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinDiagonallyLeftVal = -2; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinDiagonallyLeftVal = `FORTHEWIN; //I'm about to win
+				canIWinDiagonallyLeftVal = 666; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinDiagonallyLeftVal = `BLOCK; //hes about to win make this my priority
+				canIWinDiagonallyLeftVal = 3; //hes about to win make this my priority
 			end else begin
 				canIWinDiagonallyLeftVal = counter; //will return how close I am to winning diagonally left
 			end
@@ -596,38 +585,38 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[2] == `X)begin
+			if (board[2] == 2)begin
 				//ok I got the top right corner
 				counter = counter + 1;
-			end else if (board[2]== `O)begin
+			end else if (board[2]==1)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[4]== `X)begin
+			if(board[4]== 2)begin
 				//k i got the middle
 				counter = counter + 1;
-			end else if (board[4]== `O)begin
+			end else if (board[4]==1)begin
 				//he got middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[6] == `X)begin
+			if(board[6] == 2)begin
 				//ok i got bottom left
 				counter = counter + 1;
-			end else if (board[6] == `O)begin
+			end else if (board[6] ==1)begin
 				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
 
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinDiagonallyRightVal= `EXIT_CODE; //somebody has 3 in a row
+				canIWinDiagonallyRightVal= 999; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinDiagonallyRightVal = `CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinDiagonallyRightVal = -2; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinDiagonallyRightVal = `FORTHEWIN; //I'm about to win
+				canIWinDiagonallyRightVal = 666; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinDiagonallyRightVal = `BLOCK; //hes about to win make this my priority
+				canIWinDiagonallyRightVal = 3; //hes about to win make this my priority
 			end else begin
 				canIWinDiagonallyRightVal = counter; //will return how close I am to winning diagonally left
 			end
@@ -643,38 +632,38 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[0] == `X)begin
-				//ok I got the top left corner
+			if (board[0] == 2)begin
+				//ok I got the top right corner
 				counter = counter + 1;
-			end else if (board[0] == `O)begin
-				//he got top left
-				oppCounter = oppCounter + 1;
-			end
-
-			if(board[1] == `X)begin
-				//k i got the top middle
-				counter = counter + 1;
-			end else if (board[1] == `O)begin
-				//he got top middle
-				oppCounter = oppCounter + 1;
-			end
-
-			if(board[2] == `X)begin
-				//ok i got top right
-				counter = counter + 1;
-			end else if (board[2] == `O)begin
+			end else if (board[0] == 1)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
+			if(board[1] == 2)begin
+				//k i got the middle
+				counter = counter + 1;
+			end else if (board[1] == 1)begin
+				//he got middle
+				oppCounter = oppCounter + 1;
+			end
+
+			if(board[2] == 2)begin
+				//ok i got bottom left
+				counter = counter + 1;
+			end else if (board[2] == 1)begin
+				//he got bottom left
+				oppCounter = oppCounter + 1;
+			end
+
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinFirstRowVal = `EXIT_CODE; //somebody has 3 in a row
+				canIWinFirstRowVal = 999; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinFirstRowVal = `CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinFirstRowVal = -2; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinFirstRowVal = `FORTHEWIN; //I'm about to win
+				canIWinFirstRowVal = 666; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinFirstRowVal = `BLOCK; //hes about to win make this my priority
+				canIWinFirstRowVal = 3; //hes about to win make this my priority
 			end else begin
 				canIWinFirstRowVal = counter; //will return how close I am to winning diagonally left
 			end
@@ -690,10 +679,10 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[3] == `X)begin
+			if (board[3] == 2)begin
 				//ok I got the middle left
 				counter = counter + 1;
-			end else if (board[3] == `O)begin
+			end else if (board[3] == 1)begin
 				//he got middle left
 				oppCounter = oppCounter + 1;
 			end
@@ -701,27 +690,27 @@ module simulation(input integer userInput,input reg sendSignal);
 			if(board[4] ==`X)begin
 				//k i got the middle
 				counter = counter + 1;
-			end else if (board[4] == `O)begin
+			end else if (board[4] == 1)begin
 				//he got middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[5] == `X)begin
+			if(board[5] == 2)begin
 				//ok i got middle right
 				counter = counter + 1;
-			end else if (board[5] == `O)begin
+			end else if (board[5] == 1)begin
 				//he got middle right
 				oppCounter = oppCounter + 1;
 			end
 
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinSecondRowVal = `EXIT_CODE; //somebody has 3 in a row
+				canIWinSecondRowVal = 999; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinSecondRowVal = `CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinSecondRowVal = -2; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinSecondRowVal = `FORTHEWIN; //I'm about to win
+				canIWinSecondRowVal = 666; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinSecondRowVal = `BLOCK; //hes about to win make this my priority
+				canIWinSecondRowVal = 3; //hes about to win make this my priority
 			end else begin
 				canIWinSecondRowVal = counter; //will return how close I am to winning diagonally left
 			end
@@ -737,38 +726,38 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[6]== `X)begin
+			if (board[6]==2)begin
 				//ok I got the bottom left corner
 				counter = counter + 1;
-			end else if (board[6]== `O)begin
+			end else if (board[6]==1)begin
 				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[7]== `X)begin
+			if(board[7]==2)begin
 				//k i got the bottom middle
 				counter = counter + 1;
-			end else if (board[7]== `O)begin
+			end else if (board[7]==1)begin
 				//he got bottom middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[8] == `X)begin
+			if(board[8] ==2)begin
 				//ok i got bottom right
 				counter = counter + 1;
-			end else if (board[8] == `O)begin
+			end else if (board[8] == 1)begin
 				//he got bottom right
 				oppCounter = oppCounter + 1;
 			end
 
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinThirdRowVal = `EXIT_CODE; //somebody has 3 in a row
+				canIWinThirdRowVal = 999; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinThirdRowVal = `CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinThirdRowVal = -2; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinThirdRowVal = `FORTHEWIN; //I'm about to win
+				canIWinThirdRowVal = 666; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinThirdRowVal = `BLOCK; //hes about to win make this my priority
+				canIWinThirdRowVal = 3; //hes about to win make this my priority
 			end else begin
 				canIWinThirdRowVal = counter; //will return how close I am to winning diagonally left
 			end
@@ -785,38 +774,38 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[0]== `X)begin
+			if (board[0]==2)begin
 				//ok I got the top left corner
 				counter = counter + 1;
-			end else if (board[0]== `O)begin
+			end else if (board[0]==1)begin
 				//he got top left
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[3]== `X)begin
+			if(board[3]==2)begin
 				//k i got the middle left
 				counter = counter + 1;
-			end else if (board[3]== `O)begin
+			end else if (board[3]==1)begin
 				//he got middle left
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[6]== `X)begin
+			if(board[6]==2)begin
 				//ok i got bottom left
 				counter = counter + 1;
-			end else if (board[6]== `O)begin
+			end else if (board[6]==1)begin
 				//he got bottom left
 				oppCounter = oppCounter + 1;
 			end
 
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinFirstColumnVal = `EXIT_CODE; //somebody has 3 in a row
+				canIWinFirstColumnVal = 999; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinFirstColumnVal = `CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinFirstColumnVal = -2; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinFirstColumnVal = `FORTHEWIN; //I'm about to win
+				canIWinFirstColumnVal = 666; //I'm about to win
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinFirstColumnVal = `BLOCK; //hes about to win make this my priority
+				canIWinFirstColumnVal = 3; //hes about to win make this my priority
 			end else begin
 				canIWinFirstColumnVal = counter; //will return how close I am to winning diagonally left
 			end
@@ -833,38 +822,38 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[1]== `X)begin
+			if (board[1]==2)begin
 				//ok I got the top middle
 				counter = counter + 1;
-			end else if (board[1]== `O)begin
+			end else if (board[1]==1)begin
 				//he got top middle
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[4]== `X)begin
+			if(board[4]==2)begin
 				//k i got the center
 				counter = counter + 1;
-			end else if (board[4]== `O)begin
+			end else if (board[4]==1)begin
 				//he got center
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[7]== `X)begin
+			if(board[7]==2)begin
 				//ok i got bottom middle
 				counter = counter + 1;
-			end else if (board[7]== `O)begin
+			end else if (board[7]==1)begin
 				//he got bottom middle
 				oppCounter = oppCounter + 1;
 			end
 
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinSecondColumnVal = `EXIT_CODE; //somebody has 3 in a row
+				canIWinSecondColumnVal = 999; //somebody has 3 in a row
 			end else if (counter !=0 && oppCounter != 0) begin
-				canIWinSecondColumnVal = `CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinSecondColumnVal = -2; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinSecondColumnVal = `FORTHEWIN;
+				canIWinSecondColumnVal = 666;
 			end else if (counter ==0 && oppCounter ==2) begin
-				canIWinSecondColumnVal = `BLOCK; //hes about to win make this my priority
+				canIWinSecondColumnVal = 3; //hes about to win make this my priority
 			end else begin
 				canIWinSecondColumnVal = counter; //will return how close I am to winning diagonally left
 			end
@@ -880,55 +869,56 @@ module simulation(input integer userInput,input reg sendSignal);
 			counter =0;
 			oppCounter = 0;
 
-			if (board[2]== `X)begin
+			if (board[2]==2)begin
 				//ok I got the top right
 				counter = counter + 1;
 			end
 
-			else if (board[2]== `O)begin
+			else if (board[2]==1)begin
 				//he got top right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[5]== `X)begin
+			if(board[5]==2)begin
 				//k i got middle right
 				counter = counter + 1;
 			end
 
-			else if (board[5]== `O)begin
+			else if (board[5]==1)begin
 				//he got middle right
 				oppCounter = oppCounter + 1;
 			end
 
-			if(board[8]== `X)begin
+			if(board[8]==2)begin
 				//ok i got bottom right
 				counter = counter + 1;
 			end
 
-			else if (board[8]== `O)begin
+			else if (board[8]==1)begin
 				//he got bottom right
 				oppCounter = oppCounter + 1;
 			end
 
 			if (counter == 3 || oppCounter == 3) begin
-				canIWinThirdColumnVal = `EXIT_CODE; //somebody has 3 in a row
+				canIWinThirdColumnVal = 999; //somebody has 3 in a row
 			end
 
 			else if (counter !=0 && oppCounter != 0) begin
-				canIWinThirdColumnVal = `CONTESTED; //no way to win here. He owns at least one tile and so do I
+				canIWinThirdColumnVal = -2; //no way to win here. He owns at least one tile and so do I
 			end
 
 			else if (counter == 2 && oppCounter == 0) begin
-				canIWinThirdColumnVal = `FORTHEWIN;
+				canIWinThirdColumnVal = 666;
 			end
 
 			else if (counter ==0 && oppCounter ==2) begin
-				canIWinThirdColumnVal = `BLOCK; //hes about to win make this my priority
+				canIWinThirdColumnVal = 3; //hes about to win make this my priority
 			end
 
 			else begin
 				canIWinThirdColumnVal = counter; //will return how close I am to winning diagonally left
 			end
+
 
 		end
 
@@ -941,38 +931,65 @@ module simulation(input integer userInput,input reg sendSignal);
 	  */
 	task isEmpty();
 		begin
-			if (board[0] != `EMPTY) begin
-				isEmptyVals[0] = 0;
+			if (board[0] != 0) begin
+				isEmpty0 = 0;
 			end
-			if (board[1] != `EMPTY) begin
-				isEmptyVals[1] = 0;
+			if (board[1] != 0) begin
+				isEmpty1 = 0;
 			end
-			if (board[2] != `EMPTY) begin
-				isEmptyVals[2] = 0;
+			if (board[2] != 0) begin
+				isEmpty2 = 0;
 			end
-			if (board[3] != `EMPTY) begin
-				isEmptyVals[3] = 0;
+			if (board[3] != 0) begin
+				isEmpty3 = 0;
 			end
-			if (board[4] != `EMPTY) begin
-				isEmptyVals[4] = 0;
+			if (board[4] != 0) begin
+				isEmpty4 = 0;
+				//$display("4 is filled now");
 			end
-			if (board[5] != `EMPTY) begin
-				isEmptyVals[5] = 0;
+			if (board[5] != 0) begin
+				isEmpty5 = 0;
 			end
-			if (board[6] != `EMPTY) begin
-				isEmptyVals[6] = 0;
+			if (board[6] != 0) begin
+				isEmpty6 = 0;
 			end
-			if (board[7] != `EMPTY) begin
-				isEmptyVals[7] = 0;
+			if (board[7] != 0) begin
+				isEmpty7 = 0;
 			end
-			if (board[8] != `EMPTY) begin
-				isEmptyVals[8] = 0;
+			if (board[8] != 0) begin
+				isEmpty8 = 0;
 			end
 
 		end
 	endtask
 
-	
+	/* Might go turn by turn as in deploy by deploy
+
+	/*
+	 * I'm not actually sure if we want this. Basically tells whos turn it is but I'm not sure if we want to do this. IDK
+
+	function real determineTurn(real blah);
+		begin
+			integer xCounter = 0;
+			integer oCounter = 0;
+			for (int i = 0; i < 9; i++) begin
+					if (board[i]== 2) begin
+						xCounter++;
+					end else if (board[i] == 'O) begin
+						oCounter++;
+					end
+			end
+
+			if (xCounter > oCounter) begin
+				determineTurn =  'O; //there are more x's on the board than o's its the o's turn
+			end else begin
+				determineTurn = 2;
+			end
+		end
+	endfunction
+
+	*/
+
 	//determine turn
 	//check if finished (check if three in row and check if the board is filled) cool
 	//simulate game....confused as to how to implement. Supposedly we do test cases similar to how the calculator was and dont do keyboard input

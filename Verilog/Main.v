@@ -47,7 +47,7 @@ initial begin
 
 
  //This test case works in our favor (we win)
-	#2 userInput = 5;
+#2 userInput = 5;
 	   sendSignal = 1;
 	#5 sendSignal = 0;
 	#5 userInput = 8;
@@ -88,7 +88,7 @@ module simulation(input integer userInput,input reg sendSignal);
 	integer checkIfFinishedVal = 0;
 	integer isBoardFullVal = 0; //its full unless I say otherwise
 
-	//global var that gets reused for counting how many myself and the opponent have. I'll rezero when needed elsewhere
+	//global var that gets reused for counting how many myself and the opponent have
 	integer counter = 0;
 	integer oppCounter = 0;
 
@@ -101,7 +101,7 @@ module simulation(input integer userInput,input reg sendSignal);
 
 	initial begin
 		initBoard(); // initialize the board (this should onley happen once)
-		initEmpties(); //set all the empty variables for tile state (taken/empty) to show that they have not been taken
+		initEmpties();
 		$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8], "\n\n\n\n"); //hopefully this looks somewhat right and technically this should update when these values update;
 
 	end
@@ -145,8 +145,8 @@ module simulation(input integer userInput,input reg sendSignal);
 
 	/**
 	 * Make all the spots empty.
-	 * Run concurrently. Each is independent. Parallelize
-     */
+	 * Run concurrently. Each is independent
+         */
 	task initBoard(); begin
 		board[0] <= `EMPTY;
 		board[1] <= `EMPTY;
@@ -162,7 +162,7 @@ module simulation(input integer userInput,input reg sendSignal);
 
 	/**
 	 * Make all the is empty variables true because all tiles are empty
-	 * Run concurrently. Each is independent. Parallelize
+	 * Run concurrently. Each is independent
 	 */
 	task initEmpties(); begin
 		isEmptyVals[0] <= 1;
@@ -190,7 +190,8 @@ module simulation(input integer userInput,input reg sendSignal);
 					//someone won somehow or the board was filled
 					checkIfFinishedVal = 1;
 					$display(board[0], " ",board[1]," ",board[2],"\n",board[3], " ",board[4]," ",board[5],"\n",board[6], " ",board[7]," ",board[8]); //hopefully this looks somewhat right and technically this should update when these values update;
-					$finish; // believe this is how you exit in verilog. Could always just stand behind carpenter when he plays then when he wins or the board is full throw a hammer at his screen
+					$finish; // believe this is how you exit in verilog. Could always just stand behind carpenter when he plays then when he wins
+					//or the board is full throw a hammar at his screen
 				end
 
 			else begin
@@ -198,13 +199,12 @@ module simulation(input integer userInput,input reg sendSignal);
 			end
 		end
 	endtask
-
 	/*
 	 * Method that will search through winning combinations and prioritize a move depending on the board's current layout
 	 */
 	task determinePriority();
 		begin
-			//run concurrently reset these values. Ik efficiency doesnt matter but this is something that can be parallelized
+			//run concurrently reset these values
 			currentMatches <= -1;
 			myPriority <= -1; //rezero these
 			canIWinFirstRowVal <= 0;
@@ -229,8 +229,7 @@ module simulation(input integer userInput,input reg sendSignal);
 			//from winning immediately. If I cant then I'll choose the next best possible option prioritizing the diags
 
 			//These must be if's and not else ifs because they all need to check. Else if would break after 1.
-			//I need to compare all of them
-			
+			//If these things run in parallel and I get threading problems I'm going to be upset
 			if (canIWinDiagonallyLeftVal > currentMatches) begin
 				myPriority = `LDIAG;
 				currentMatches = canIWinDiagonallyLeftVal;
@@ -315,11 +314,12 @@ module simulation(input integer userInput,input reg sendSignal);
 				end
 
 				else begin
-					//I already had bottom left and middle take top right. Could add redundancy w/ elif
+					//I already had bottom left and middle take top right. Could add redundancy
 					board[2]=`X;
 					$display("Box was: 2");
 				end
 			end
+			//Verilog is the kid who just licks the walls in elementary school
 			//1st row
 			else if (myPriority == `HORIZ1) begin
 				if (isEmptyVals[0]==1) begin
@@ -335,7 +335,7 @@ module simulation(input integer userInput,input reg sendSignal);
 				end
 
 				 else if (isEmptyVals[2]==1) begin
-					//top right
+					//bottom left
 					board[2] = `X;
 					$display("Box was: 2");
 				end
@@ -355,7 +355,7 @@ module simulation(input integer userInput,input reg sendSignal);
 				end
 
 				else if (isEmptyVals[5]==1) begin
-					//middle right
+					//bottom middle
 					board[5] = `X;
 					$display("Box was: 5");
 				end
@@ -363,7 +363,7 @@ module simulation(input integer userInput,input reg sendSignal);
 			//third row
 			else if (myPriority == `HORIZ3) begin
 				if (isEmptyVals[6] ==1) begin
-					//bottom left
+					//bottom right
 					board[6] = `X;
 					$display("Box was: 6");
 				end
@@ -443,14 +443,12 @@ module simulation(input integer userInput,input reg sendSignal);
 		end
 	endtask
 
+
+
 	/* there is a bug for case X O X
 							   - X O
 							   O X O
 	Solution is to add redundancy. If no prioritiy is assigned find an open spot
-	Technically should never get here due to sheer improbality of getting here.
-	I literally think it is impossible. In cases where the board can be fed in (ie game in progess)
-	its possible but I'm not sure if you can get here through a game with the computer using the logic implemented.
-	Anyways its a redundancy for a reason.
 	*/
 	task redundancy();
 		begin
@@ -541,8 +539,10 @@ module simulation(input integer userInput,input reg sendSignal);
 		
 	endtask
 
+
 	/**
-      * Method that checks if the computer can win on the main diagonal if not ranks how close or garbage
+	  * Ok so my outputs here are going to be -2 if its garbage
+	  * TODO
  	  */
 	task canIWinDiagonallyLeft();
 		begin
@@ -588,7 +588,8 @@ module simulation(input integer userInput,input reg sendSignal);
 	endtask
 
 	/**
-	  * Method that checks if the computer can win on the secondary diagonal if not ranks how close or garbage
+	  * Ok so my outputs here are going to be -2 if its garbage
+	  * TODO
  	  */
 	task canIWinDiagonallyRight();
 		begin
@@ -774,6 +775,7 @@ module simulation(input integer userInput,input reg sendSignal);
 		end
 	endtask
 
+
 	/**
 	 * Method that checks if the computer can win vertically on the first column if not ranks how close or garbage
 	 */
@@ -821,6 +823,7 @@ module simulation(input integer userInput,input reg sendSignal);
 		end
 	endtask
 
+
 	/**
 	 * Method that checks if the computer can win vertically on the second column if not ranks how close or garbage
 	 */
@@ -859,7 +862,7 @@ module simulation(input integer userInput,input reg sendSignal);
 			end else if (counter !=0 && oppCounter != 0) begin
 				canIWinSecondColumnVal = `CONTESTED; //no way to win here. He owns at least one tile and so do I
 			end else if (counter == 2 && oppCounter == 0) begin
-				canIWinSecondColumnVal = `FORTHEWIN; //have an immediate win possibility
+				canIWinSecondColumnVal = `FORTHEWIN;
 			end else if (counter ==0 && oppCounter ==2) begin
 				canIWinSecondColumnVal = `BLOCK; //hes about to win make this my priority
 			end else begin
@@ -916,7 +919,7 @@ module simulation(input integer userInput,input reg sendSignal);
 			end
 
 			else if (counter == 2 && oppCounter == 0) begin
-				canIWinThirdColumnVal = `FORTHEWIN; //have an immediate win possibility
+				canIWinThirdColumnVal = `FORTHEWIN;
 			end
 
 			else if (counter ==0 && oppCounter ==2) begin
@@ -930,6 +933,8 @@ module simulation(input integer userInput,input reg sendSignal);
 		end
 
 	endtask
+
+
 
 	/**
 	  * Returns a 1 if its empty, 0 otherwise
@@ -966,6 +971,23 @@ module simulation(input integer userInput,input reg sendSignal);
 
 		end
 	endtask
+
+	
+	//determine turn
+	//check if finished (check if three in row and check if the board is filled) cool
+	//simulate game....confused as to how to implement. Supposedly we do test cases similar to how the calculator was and dont do keyboard input
+	//determine Priority check
+	//insertCharacter check
+	//isTakenByX //done
+	//isTakenByO done
+	//isEmpty done
+	//print the board HANDLED BY MONITOR
+	//can I win horizontally done row by row for fault reasons and to make it easier to flag which row had what.
+	//can i win vertically good but brackets are fucked up in third one. cant spot error
+	//can i win diagonally left ok
+	//can i win diagonally right ok
+	//init the board CHECK
+	//is the board filled CHECK
 
 
 endmodule
